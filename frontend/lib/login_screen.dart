@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -9,25 +12,65 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool showError = false;
+  String errorMessage = "";
 
-  void handleLogin() {
-    String username = usernameController.text;
-    String password = passwordController.text;
+  Future<void> handleLogin() async {
+    final String username = usernameController.text;
+    final String password = passwordController.text;
 
-    // Simulate login logic (Replace with actual authentication logic)
-    if (username == 'example' && password == 'password') {
-      // Successful login
-      print('Login successful');
-      // Navigate to the home screen or perform other actions
-    } else {
-      // Failed login
-      print('Login failed');
-      // Show error message
+    // Replace with your backend API URL
+    const String apiUrl = 'http://192.168.1.240:8080/login';
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+
+    try {
+      final response = await http.post(Uri.parse(apiUrl),
+          body: jsonEncode({
+            'username': username,
+            'password': password,
+          }),
+          headers: headers);
+
+      if (response.statusCode == 200) {
+        // Successful login
+        print('Login successful');
+        // Navigate to the home screen or perform other actions
+      } else {
+        // Failed login
+        print('Login failed');
+        // Show an error message or perform other actions
+        setState(() {
+          showError = true;
+          errorMessage = response.body;
+        });
+      }
+    } catch (error) {
+      // Handle network or other errors
+      print('Error: $error');
       setState(() {
         showError = true;
+        errorMessage = "Server is busy. Please try again later.";
       });
     }
   }
+
+  // void handleLogin() {
+  //   String username = usernameController.text;
+  //   String password = passwordController.text;
+  //
+  //   // Simulate login logic (Replace with actual authentication logic)
+  //   if (username == 'example' && password == 'password') {
+  //     // Successful login
+  //     print('Login successful');
+  //     // Navigate to the home screen or perform other actions
+  //   } else {
+  //     // Failed login
+  //     print('Login failed');
+  //     // Show error message
+  //     setState(() {
+  //       showError = true;
+  //     });
+  //   }
+  // }
 
   void closeError() {
     // Close the error message
@@ -64,9 +107,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Incorrect username or password!',
-                        style: TextStyle(color: Colors.white),
+                      Text(
+                        errorMessage,
+                        style: const TextStyle(color: Colors.white),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -80,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                ),
+                )
             ],
           ),
         ),

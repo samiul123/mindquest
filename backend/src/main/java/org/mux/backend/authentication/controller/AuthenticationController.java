@@ -44,13 +44,13 @@ public class AuthenticationController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto){
+    public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
         // checking for username exists in a database
-        if(userRepository.existsByUserName(signUpDto.getUsername())){
+        if (userRepository.existsByUserName(signUpDto.getUsername())) {
             return new ResponseEntity<>("Username already exists!", HttpStatus.BAD_REQUEST);
         }
         // checking for email exists in a database
-        if(userRepository.existsByEmail(signUpDto.getEmail())){
+        if (userRepository.existsByEmail(signUpDto.getEmail())) {
             return new ResponseEntity<>("Email is already exist!", HttpStatus.BAD_REQUEST);
         }
         // creating user object
