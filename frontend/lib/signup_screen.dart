@@ -1,34 +1,29 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:frontend/homescreen.dart';
-import 'package:frontend/signup_screen.dart';
 import 'package:http/http.dart' as http;
 
-class LoginScreen extends StatefulWidget {
+import 'homescreen.dart';
+
+class SignupScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _LoginScreenState();
+  State<StatefulWidget> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   bool showError = false;
   String errorMessage = "";
 
-  void resetState() {
-    setState(() {
-      showError = false;
-      errorMessage = "";
-    });
-  }
-
-  Future<void> handleLogin(BuildContext context) async {
+  Future<void> handleSignup() async {
     final String username = usernameController.text;
     final String password = passwordController.text;
+    final String email = emailController.text;
 
     // Replace with your backend API URL
-    const String apiUrl = 'http://192.168.1.240:8080/login';
+    const String apiUrl = 'http://192.168.1.240:8080/signup';
     Map<String, String> headers = {'Content-Type': 'application/json'};
 
     try {
@@ -36,17 +31,18 @@ class _LoginScreenState extends State<LoginScreen> {
           body: jsonEncode({
             'username': username,
             'password': password,
+            'email': email
           }),
           headers: headers);
       if (!mounted) return;
       if (response.statusCode == 200) {
-        // Successful login
-        print('Login successful');
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        // Successful sign up
+        print('sign up successful');
         // Navigate to the home screen or perform other actions
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       } else {
         // Failed login
-        print('Login failed');
+        print('Sign up failed');
         // Show an error message or perform other actions
         setState(() {
           showError = true;
@@ -62,6 +58,25 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
+
+  // void handleLogin() {
+  //   String username = usernameController.text;
+  //   String password = passwordController.text;
+  //
+  //   // Simulate login logic (Replace with actual authentication logic)
+  //   if (username == 'example' && password == 'password') {
+  //     // Successful login
+  //     print('Login successful');
+  //     // Navigate to the home screen or perform other actions
+  //   } else {
+  //     // Failed login
+  //     print('Login failed');
+  //     // Show error message
+  //     setState(() {
+  //       showError = true;
+  //     });
+  //   }
+  // }
 
   void closeError() {
     // Close the error message
@@ -84,11 +99,11 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 20),
               buildUsernameField(),
               const SizedBox(height: 10),
+              buildEmailField(),
+              const SizedBox(height: 10),
               buildPasswordField(),
               const SizedBox(height: 20),
-              buildSignupPrompt(),
-              const SizedBox(height: 20),
-              buildLoginButton(context),
+              buildSignupButton(),
               const SizedBox(height: 20),
               // Display error message if showError is true
               if (showError)
@@ -122,38 +137,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  ElevatedButton buildLoginButton(BuildContext context) {
+  ElevatedButton buildSignupButton() {
     return ElevatedButton(
       onPressed: () {
         // Handle login logic
-        handleLogin(context);
+        handleSignup();
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.purple,
       ),
-      child: const Text('Log In', style: TextStyle(color: Colors.white)),
+      child: const Text('Sign up', style: TextStyle(color: Colors.white)),
     );
   }
-
-  Row buildSignupPrompt() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          "Don't have an account?",
-          style: TextStyle(color: Colors.white),
-        ),
-        GestureDetector(
-            onTap: () {
-              //   TODO: Navigate to sign up page
-              resetState();
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen()));
-            },
-            child: const Text("Sign up", style: TextStyle(color: Colors.blue)))
-      ],
-    );
-  }
-
+  
   TextField buildPasswordField() {
     return TextField(
       controller: passwordController,
@@ -179,9 +175,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   TextField buildEmailField() {
     return TextField(
-      controller: usernameController,
+      controller: emailController,
       decoration: const InputDecoration(
-        hintText: 'Username',
+        hintText: 'Email',
         fillColor: Colors.white,
         filled: true,
       ),

@@ -51,11 +51,10 @@ public class AuthenticationController {
         }
         // checking for email exists in a database
         if (userRepository.existsByEmail(signUpDto.getEmail())) {
-            return new ResponseEntity<>("Email is already exist!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Email already exists!", HttpStatus.BAD_REQUEST);
         }
         // creating user object
         UserEntity user = new UserEntity();
-        user.setName(signUpDto.getName());
         user.setUserName(signUpDto.getUsername());
         user.setEmail(signUpDto.getEmail());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));

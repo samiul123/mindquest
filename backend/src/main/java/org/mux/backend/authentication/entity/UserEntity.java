@@ -10,7 +10,6 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
     @Column(nullable = false, unique = true)
     private String userName;
     @Column(nullable = false, unique = true)
@@ -26,14 +25,6 @@ public class UserEntity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getUserName() {

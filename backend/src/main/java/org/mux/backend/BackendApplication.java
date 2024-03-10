@@ -14,12 +14,15 @@ public class BackendApplication {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-//    @Bean
-//    public CommandLineRunner demo(RoleRepository roleRepo) {
-//        return (args) -> {
-//            RoleEntity role=new RoleEntity();
-//            role.setName("ROLE_ADMIN");
-//            roleRepo.save(role);
-//        };
-//    }
+    @Bean
+    public CommandLineRunner demo(RoleRepository roleRepo) {
+        return (args) -> {
+            RoleEntity role=new RoleEntity();
+            if (roleRepo.existsByName("ROLE_ADMIN")) {
+                return;
+            }
+            role.setName("ROLE_ADMIN");
+            roleRepo.save(role);
+        };
+    }
 }
