@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/homescreen.dart';
 import 'package:frontend/signup_screen.dart';
 import 'package:http/http.dart' as http;
@@ -28,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final String password = passwordController.text;
 
     // Replace with your backend API URL
-    const String apiUrl = 'http://192.168.1.240:8080/login';
+    String apiUrl = '${dotenv.env["BASE_URL"]}/login';
     Map<String, String> headers = {'Content-Type': 'application/json'};
 
     try {
