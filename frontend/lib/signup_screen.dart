@@ -5,9 +5,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/login_screen.dart';
 import 'package:http/http.dart' as http;
 
-import 'homescreen.dart';
-
 class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _SignupScreenState();
 }
@@ -45,7 +45,7 @@ class _SignupScreenState extends State<SignupScreen> {
         print('sign up successful');
         // Navigate to the home screen or perform other actions
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
       } else {
         // Failed login
         print('Sign up failed');

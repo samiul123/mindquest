@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:frontend/homescreen.dart';
+import 'package:frontend/home_screen.dart';
 import 'package:frontend/signup_screen.dart';
 import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _LoginScreenState();
 }
@@ -43,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         // Successful login
         print('Login successful');
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
         // Navigate to the home screen or perform other actions
       } else {
         // Failed login
@@ -148,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
             onTap: () {
               //   TODO: Navigate to sign up page
               resetState();
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const SignupScreen()));
             },
             child: const Text("Sign up", style: TextStyle(color: Colors.blue)))
       ],
