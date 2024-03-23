@@ -4,7 +4,7 @@ import 'package:frontend/utils.dart';
 class CommonLayout extends StatefulWidget {
   final Widget body;
 
-  const CommonLayout({super.key, required this.body});
+  const CommonLayout({required this.body});
 
   @override
   State<StatefulWidget> createState() => _CommonLayoutState();
@@ -26,6 +26,7 @@ class _CommonLayoutState extends State<CommonLayout> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      backgroundColor: CustomColor.grey,
         appBar: AppBar(
           backgroundColor: CustomColor.purple,
           title: const Text('MindQuest', style: TextStyle(color: Colors.white)),
