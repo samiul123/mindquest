@@ -1,6 +1,5 @@
 package org.mux.backend.event.entity;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +23,10 @@ public class EventEntity {
     private String title;
 
     @Column(nullable = false)
-    private LocalDateTime dateTime;
+    private LocalDateTime startTime;
+
+    @Column(nullable = false)
+    private LocalDateTime endTime;
 
     @Column(nullable = false)
     private String location;

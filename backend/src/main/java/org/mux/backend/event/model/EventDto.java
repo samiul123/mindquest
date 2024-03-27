@@ -19,5 +19,8 @@ public class EventDto {
     private String location;
     @NonNull
     private String description;
-    private LocalDateTime dateTime;
+    @NonNull
+    private LocalDateTime startTime;
+    @NonNull
+    private LocalDateTime endTime;
 }
