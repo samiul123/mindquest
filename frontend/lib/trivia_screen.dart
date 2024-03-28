@@ -23,6 +23,9 @@ class _triviaWidgetState extends State<triviaScreen> {
   int answer3 = 0;
   int answer4 = 0;
 
+  int correctAnswer = 0;
+  int answerChoice = -1;
+
   String question = "What is the air speed velocity of an unladed swallow?";
   List<int> answerNum =
   List.generate(5, (index) => (index == 0) ? index = 1 : (index += 1));
@@ -218,42 +221,50 @@ class _triviaWidgetState extends State<triviaScreen> {
     //_timer.cancel();
   }
 
+  void changeAnswer(int c){
+    answerChoice = c;
+  }
+
+  void _submit(){
+    if (answerChoice == correctAnswer){
+      correctAns();
+    } else {
+      wrongAns();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // if (_counter == 0) {
     //   timeOut();
     // }
-    answer0 = 0;
-    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[0];
-    answer1 = 1;
-    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[1];
-    answer2 = 2;
-    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[2];
-    answer3 = 3;
-    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[3];
-    answer4 = 4;
-    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[4];
+    answer0 = 0;    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[0];
+    answer1 = 1;    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[1];
+    answer2 = 2;    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[2];
+    answer3 = 3;    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[3];
+    answer4 = 4;    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[4];
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
           title: const Text("Quiz!"),
-          leading: IconButton(
+          /*leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
             },
-          )),
+          )*/
+      ),
       body: SingleChildScrollView(
           child: Center(
             child: Column(children: <Widget>[
               const Padding(padding: EdgeInsets.all(20)),
-              Padding(
-                padding: const EdgeInsets.only(
+              const Padding(
+                padding: EdgeInsets.only(
                     left: 60, top: 20.0, right: 60, bottom: 20.0),
                 child: Center(
                     child: Text(
-                      "questionText",
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      "QUESTION:",
+                      style: TextStyle(fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                       textScaleFactor: 2,
                     )),
@@ -265,120 +276,64 @@ class _triviaWidgetState extends State<triviaScreen> {
                 padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
               ), //IGNORE //Counter
               GFButton(
+                color: Colors.grey,
                 text: "Correct",
                 onPressed: () {
-                  //Check if answer is correct
-                  int x = 1; //questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[0]);
-                  switch (x) {
-                    case 0:
-                    //WRONG
-                      wrongAns();
-                      break;
-                    case 1:
-                    //RIGHT
-                      correctAns();
-                      break;
-                    case 2:
-                    //Already answered
-                      break;
-                  }
+                  //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[0]);
+                  //Change answer
+                  changeAnswer(0);
+                },
+              ), //Ans0
+              GFButton(
+                color: Colors.grey,
+                text: "Incorrect",
+                onPressed: () {
+                  //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[1]);
+
+                  //Change answer
+                  changeAnswer(1);
                 },
               ), //Ans1
               GFButton(
+                color: Colors.grey,
                 text: "Incorrect",
                 onPressed: () {
                   //Check if answer is correct
-                  int x = 0; //questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[1]);
-                  switch (x) {
-                    case 0:
-                    //WRONG
-                      wrongAns();
-                      break;
-                    case 1:
-                    //RIGHT
-                      correctAns();
-                      break;
-                    case 2:
-                    //Already answered
-                      break;
-                  }
+                  //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[2]);
+
+                  //Change answer
+                  changeAnswer(2);
                 },
               ), //Ans2
               GFButton(
+                color: Colors.grey,
                 text: "Incorrect",
                 onPressed: () {
                   //Check if answer is correct
-                  int x = 0; // questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[2]);
-                  switch (x) {
-                    case 0:
-                    //WRONG
-                      wrongAns();
-                      break;
-                    case 1:
-                    //RIGHT
-                      correctAns();
-                      break;
-                    case 2:
-                    //Already answered
-                      break;
-                  }
+                  //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[3]);
+
+                  //Change answer
+                  changeAnswer(3);
                 },
               ), //Ans3
               GFButton(
+                color: Colors.grey,
                 text: "Incorrect",
                 onPressed: () {
                   //Check if answer is correct
-                  int x = 0; //questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[3]);
-                  switch (x) {
-                    case 0:
-                    //WRONG
-                      wrongAns();
-                      break;
-                    case 1:
-                    //RIGHT
-                      correctAns();
-                      break;
-                    case 2:
-                    //Already answered
-                      break;
-                  }
+                  //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[4]);
+
+                  //Change answer
+                  changeAnswer(4);
                 },
               ), //Ans4
               GFButton(
-                text: "Incorrect",
+                color: Colors.purple,
+                text: "Submit Answer",
                 onPressed: () {
-                  //Check if answer is correct
-                  int x = 0; //questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[4]);
-                  switch (x) {
-                    case 0:
-                    //WRONG
-                      wrongAns();
-                      break;
-                    case 1:
-                    //RIGHT
-                      correctAns();
-                      break;
-                    case 2:
-                    //Already answered
-                      break;
-                  }
-                },
-              ), //Ans5
-              //timer test buttons (pause & start
-              /*GFButton(
-                color: Colors.yellow,
-                text: "start timer (TESTING BUTTON)",
-                onPressed: () {
-                  //start
-                  _startTimer();
-                }),
-            GFButton(
-                color: Colors.yellow,
-                text: "pause timer (TESTING BUTTON)",
-                onPressed: () {
-                  //pause
-                  _timer.cancel();
-                }),*/
+                  //Run submit function
+                  _submit();
+                }), //Submit
               // GFButton(
               //     color: AdaptiveTheme.of(context).theme.primaryColorDark,
               //     text: "Next Question",
@@ -394,6 +349,7 @@ class _triviaWidgetState extends State<triviaScreen> {
               //       player.stop();
               //       Navigator.pop(context);
               //     })
+
             ]),
           )),
     );
