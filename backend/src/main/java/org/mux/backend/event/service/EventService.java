@@ -28,7 +28,7 @@ public class EventService {
 
     public List<EventDto> getEvents(String period) {
         if (period.equals("current-week")) {
-            return eventRepository.findEventsForCurrentWeek(2)
+            return eventRepository.findEventsForCurrentWeek()
                     .stream()
                     .map(eventEntity -> EventDto.builder()
                             .title(eventEntity.getTitle())

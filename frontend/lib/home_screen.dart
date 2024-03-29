@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/event_card.dart';
 import 'package:frontend/line_chart_widget.dart';
@@ -8,17 +10,12 @@ import 'common_layout.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late bool draw = false;
-  static const events = [
-    {"title": "event1", "time": "02-12-2023", "location": "Heller Hall 330"},
-    {"title": "event2", "time": "02-12-2023", "location": "Heller Hall 330"}
-  ];
-
   static List<TriviaScore> scores = [
     TriviaScore(Date.parseDate('12/01/2023'), 4),
     TriviaScore(Date.parseDate('12/02/2023'), 4),
@@ -26,15 +23,11 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   Future<void> onRefresh() async {
-    print("On refresh");
-    setState(() {
-      draw = !draw;
-    });
+    EventCard.addEventToStream();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("Building home screen");
     return RefreshIndicator(
         onRefresh: onRefresh,
         child: CommonLayout(
