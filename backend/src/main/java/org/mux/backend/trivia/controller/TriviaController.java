@@ -1,5 +1,6 @@
 package org.mux.backend.trivia.controller;
 
+import org.mux.backend.trivia.model.AggregateScore;
 import org.mux.backend.trivia.model.TriviaDto;
 import org.mux.backend.trivia.model.TriviaResponse;
 import org.mux.backend.trivia.model.UserScoreDto;
@@ -7,6 +8,8 @@ import org.mux.backend.trivia.service.TriviaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class TriviaController {
@@ -32,5 +35,11 @@ public class TriviaController {
     public ResponseEntity<TriviaResponse> getTrivia(@RequestParam String username) throws Exception {
         TriviaResponse trivia = triviaService.getTrivia(username);
         return new ResponseEntity<>(trivia, HttpStatus.FOUND);
+    }
+
+    @GetMapping("/trivia/agg-score")
+    public ResponseEntity<List<AggregateScore>> getAggregatedScore(@RequestParam String username) {
+        List<AggregateScore> aggregatedScore = triviaService.getAggregatedScore(username);
+        return new ResponseEntity<>(aggregatedScore, HttpStatus.OK);
     }
 }
