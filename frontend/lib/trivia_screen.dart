@@ -242,7 +242,7 @@ class _triviaWidgetState extends State<triviaScreen> {
     answer1 = 1;    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[1];
     answer2 = 2;    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[2];
     answer3 = 3;    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[3];
-    answer4 = 4;    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[4];
+    // answer4 = 4;    //questioner.gameQuestions[questioner.currentQuestion].yearAnswers[4];
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -282,76 +282,76 @@ class _triviaWidgetState extends State<triviaScreen> {
               // const Padding(
               //   padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
               // ), //IGNORE //Counter
-              GFButton(
-                size: GFSize.LARGE,
-                color: const Color.fromRGBO(177, 177, 177, 1),
-                highlightColor: const Color.fromRGBO(159, 119, 226, 1),
-                text: answers[0],
-                onPressed: () {
-                  //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[0]);
-                  //Change answer
-                  changeAnswer(0);
-                },
-              ), //Ans0
-              GFButton(
-                size: GFSize.LARGE,
-                color: const Color.fromRGBO(177, 177, 177, 1),
-                highlightColor: const Color.fromRGBO(159, 119, 226, 1),
-                text: answers[1],
-                onPressed: () {
-                  //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[1]);
-
-                  //Change answer
-                  changeAnswer(1);
-                },
-              ), //Ans1
-              GFButton(
-                size: GFSize.LARGE,
-                color: const Color.fromRGBO(177, 177, 177, 1),
-                highlightColor: const Color.fromRGBO(159, 119, 226, 1),
-                text: answers[2],
-                onPressed: () {
-                  //Check if answer is correct
-                  //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[2]);
-
-                  //Change answer
-                  changeAnswer(2);
-                },
-              ), //Ans2
-              GFButton(
-                size: GFSize.LARGE,
-                color: const Color.fromRGBO(177, 177, 177, 1),
-                highlightColor: const Color.fromRGBO(159, 119, 226, 1),
-                text: answers[3],
-                onPressed: () {
-                  //Check if answer is correct
-                  //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[3]);
-
-                  //Change answer
-                  changeAnswer(3);
-                },
-              ), //Ans3
-              GFButton(
-                size: GFSize.LARGE,
-                color: const Color.fromRGBO(177, 177, 177, 1),
-                highlightColor: const Color.fromRGBO(159, 119, 226, 1),
-                text: answers[4],
-                onPressed: () {
-                  //Check if answer is correct
-                  //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[4]);
-
-                  //Change answer
-                  changeAnswer(4);
-                },
-              ), //Ans4
-              GFButton(
-                size: GFSize.LARGE,
-                color: const Color.fromRGBO(159, 119, 226, 1),
-                text: "Submit Answer",
-                onPressed: () {
-                  //Run submit function
-                  _submit();
-                }), //Submit
+              // GFButton(
+              //   size: GFSize.LARGE,
+              //   color: const Color.fromRGBO(177, 177, 177, 1),
+              //   highlightColor: const Color.fromRGBO(159, 119, 226, 1),
+              //   text: answers[0],
+              //   onPressed: () {
+              //     //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[0]);
+              //     //Change answer
+              //     changeAnswer(0);
+              //   },
+              // ), //Ans0
+              // GFButton(
+              //   size: GFSize.LARGE,
+              //   color: const Color.fromRGBO(177, 177, 177, 1),
+              //   highlightColor: const Color.fromRGBO(159, 119, 226, 1),
+              //   text: answers[1],
+              //   onPressed: () {
+              //     //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[1]);
+              //
+              //     //Change answer
+              //     changeAnswer(1);
+              //   },
+              // ), //Ans1
+              // GFButton(
+              //   size: GFSize.LARGE,
+              //   color: const Color.fromRGBO(177, 177, 177, 1),
+              //   highlightColor: const Color.fromRGBO(159, 119, 226, 1),
+              //   text: answers[2],
+              //   onPressed: () {
+              //     //Check if answer is correct
+              //     //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[2]);
+              //
+              //     //Change answer
+              //     changeAnswer(2);
+              //   },
+              // ), //Ans2
+              // GFButton(
+              //   size: GFSize.LARGE,
+              //   color: const Color.fromRGBO(177, 177, 177, 1),
+              //   highlightColor: const Color.fromRGBO(159, 119, 226, 1),
+              //   text: answers[3],
+              //   onPressed: () {
+              //     //Check if answer is correct
+              //     //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[3]);
+              //
+              //     //Change answer
+              //     changeAnswer(3);
+              //   },
+              // ), //Ans3
+              // GFButton(
+              //   size: GFSize.LARGE,
+              //   color: const Color.fromRGBO(177, 177, 177, 1),
+              //   highlightColor: const Color.fromRGBO(159, 119, 226, 1),
+              //   text: answers[4],
+              //   onPressed: () {
+              //     //Check if answer is correct
+              //     //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[4]);
+              //
+              //     //Change answer
+              //     changeAnswer(4);
+              //   },
+              // ), //Ans4
+              // GFButton(
+              //   size: GFSize.LARGE,
+              //   color: const Color.fromRGBO(159, 119, 226, 1),
+              //   text: "Submit Answer",
+              //   onPressed: () {
+              //     //Run submit function
+              //     _submit();
+              //   }), //Submit
               // GFButton(
               //     color: AdaptiveTheme.of(context).theme.primaryColorDark,
               //     text: "Next Question",
