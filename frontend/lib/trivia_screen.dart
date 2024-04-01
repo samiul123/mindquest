@@ -247,6 +247,8 @@ class _triviaWidgetState extends State<triviaScreen> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
           title: const Text("Quiz!"),
+          backgroundColor: const Color.fromRGBO(159, 119, 226, 1),
+          foregroundColor: Colors.white,
           /*leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -254,30 +256,37 @@ class _triviaWidgetState extends State<triviaScreen> {
             },
           )*/
       ),
+      backgroundColor: Colors.grey[850],
       body: SingleChildScrollView(
           child: Center(
+            widthFactor: 4,
             child: Column(children: <Widget>[
               const Padding(padding: EdgeInsets.all(20)),
               const Padding(
                 padding: EdgeInsets.only(
-                    left: 60, top: 20.0, right: 60, bottom: 20.0),
+                    left: 0, top: 20.0, right: 0, bottom: 20.0),
                 child: Center(
+                    widthFactor: 4,
+                    heightFactor: 2,
                     child: Text(
                       "QUESTION:",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(159, 119, 226, 1)),
                       textAlign: TextAlign.center,
                       textScaleFactor: 2,
-                    )),
+                    )
+                ),
               ), //Question
               const Padding(
                 padding: EdgeInsets.only(bottom: 20.0),
               ), //IGNORE
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
-              ), //IGNORE //Counter
+              // const Padding(
+              //   padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
+              // ), //IGNORE //Counter
               GFButton(
-                color: Colors.grey,
-                text: "Correct",
+                size: GFSize.LARGE,
+                color: const Color.fromRGBO(177, 177, 177, 1),
+                highlightColor: const Color.fromRGBO(159, 119, 226, 1),
+                text: answers[0],
                 onPressed: () {
                   //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[0]);
                   //Change answer
@@ -285,8 +294,10 @@ class _triviaWidgetState extends State<triviaScreen> {
                 },
               ), //Ans0
               GFButton(
-                color: Colors.grey,
-                text: "Incorrect",
+                size: GFSize.LARGE,
+                color: const Color.fromRGBO(177, 177, 177, 1),
+                highlightColor: const Color.fromRGBO(159, 119, 226, 1),
+                text: answers[1],
                 onPressed: () {
                   //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[1]);
 
@@ -295,8 +306,10 @@ class _triviaWidgetState extends State<triviaScreen> {
                 },
               ), //Ans1
               GFButton(
-                color: Colors.grey,
-                text: "Incorrect",
+                size: GFSize.LARGE,
+                color: const Color.fromRGBO(177, 177, 177, 1),
+                highlightColor: const Color.fromRGBO(159, 119, 226, 1),
+                text: answers[2],
                 onPressed: () {
                   //Check if answer is correct
                   //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[2]);
@@ -306,8 +319,10 @@ class _triviaWidgetState extends State<triviaScreen> {
                 },
               ), //Ans2
               GFButton(
-                color: Colors.grey,
-                text: "Incorrect",
+                size: GFSize.LARGE,
+                color: const Color.fromRGBO(177, 177, 177, 1),
+                highlightColor: const Color.fromRGBO(159, 119, 226, 1),
+                text: answers[3],
                 onPressed: () {
                   //Check if answer is correct
                   //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[3]);
@@ -317,8 +332,10 @@ class _triviaWidgetState extends State<triviaScreen> {
                 },
               ), //Ans3
               GFButton(
-                color: Colors.grey,
-                text: "Incorrect",
+                size: GFSize.LARGE,
+                color: const Color.fromRGBO(177, 177, 177, 1),
+                highlightColor: const Color.fromRGBO(159, 119, 226, 1),
+                text: answers[4],
                 onPressed: () {
                   //Check if answer is correct
                   //int x = questioner.submitAnswer(questioner.gameQuestions[questioner.currentQuestion].yearAnswers[4]);
@@ -328,7 +345,8 @@ class _triviaWidgetState extends State<triviaScreen> {
                 },
               ), //Ans4
               GFButton(
-                color: Colors.purple,
+                size: GFSize.LARGE,
+                color: const Color.fromRGBO(159, 119, 226, 1),
                 text: "Submit Answer",
                 onPressed: () {
                   //Run submit function
