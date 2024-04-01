@@ -1,6 +1,6 @@
 class TriviaScore {
   final DateTime date;
-  final int score;
+  final int aggregatedScore;
 
-  TriviaScore(this.date, this.score);
+  TriviaScore(this.date, this.aggregatedScore);
 }

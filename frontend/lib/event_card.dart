@@ -49,6 +49,7 @@ class _EventCardState extends State<EventCard> {
         initialData: null,
         stream: _eventStream,
         builder: (context, snapshot) {
+          print("events $snapshot");
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Show loading indicator while fetching data
             return const Card(
@@ -65,6 +66,30 @@ class _EventCardState extends State<EventCard> {
                 child: Text('Error: ${snapshot.error}'),
               ),
             );
+          } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+            // If there is data but it's empty, show the message
+            return const Card(
+                color: CustomColor.lightgrey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        flex: 1,
+                        child: ListTile(
+                          title: Text('Events this week',
+                              style: TextStyle(
+                                  color: Colors.white)), // Header title
+                        )),
+                    Expanded(
+                        flex: 9,
+                        child: Center(
+                          child: Text(
+                            'There are no events for now',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )),
+                  ],
+                ));
           } else {
             return Card(
               color: CustomColor.lightgrey,

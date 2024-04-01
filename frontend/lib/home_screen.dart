@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> onRefresh() async {
     EventCard.addEventToStream();
+    LineChartWidget.addScoreToStream();
   }
 
   @override
@@ -35,17 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Expanded(
                 flex: 4, // 40% of the screen height
-                child: Card(
-                  color: CustomColor.lightgrey,
-                  child: Column(children: [
-                    const Expanded(
-                        flex: 1,
-                        child: ListTile(
-                            title: Text('Your scores',
-                                style: TextStyle(color: Colors.white)))),
-                    Expanded(flex: 9, child: LineChartWidget(scores: scores))
-                  ]),
-                ),
+                child: LineChartWidget(),
               ),
               Expanded(
                   flex: 4, // 40% of the screen height
