@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend/common_layout.dart';
 import 'package:frontend/login_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -45,7 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
         print('sign up successful');
         // Navigate to the home screen or perform other actions
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+            context, MaterialPageRoute(builder: (context) => CommonLayout()));
       } else {
         // Failed login
         print('Sign up failed');

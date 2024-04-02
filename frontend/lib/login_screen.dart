@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend/common_layout.dart';
 import 'package:frontend/home_screen.dart';
 import 'package:frontend/signup_screen.dart';
 import 'package:http/http.dart' as http;
@@ -45,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         // Successful login
         print('Login successful');
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CommonLayout()));
         // Navigate to the home screen or perform other actions
       } else {
         // Failed login

@@ -21,7 +21,7 @@ class LineChartWidget extends StatefulWidget {
 class _LineChartWidgetState extends State<LineChartWidget> {
   static late List<dynamic> scores;
   static final StreamController<List<dynamic>> _lineChartController =
-      StreamController();
+      StreamController.broadcast();
 
   Stream<List<dynamic>> get _lineChartStream => _lineChartController.stream;
 
@@ -61,6 +61,13 @@ class _LineChartWidgetState extends State<LineChartWidget> {
     super.initState();
     _addScoreToStream();
   }
+
+
+  // @override
+  // void dispose() {
+  //   _lineChartController.close();
+  //   super.dispose();
+  // }
 
   // // Calculate dynamic margins based on the content width
   // double calculateLeftMargin(double contentWidth) {

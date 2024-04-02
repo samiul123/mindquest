@@ -18,7 +18,7 @@ class EventCard extends StatefulWidget {
 
 class _EventCardState extends State<EventCard> {
   static final StreamController<List<dynamic>> _eventController =
-      StreamController();
+      StreamController.broadcast();
 
   Stream<List<dynamic>> get _eventStream => _eventController.stream;
 
@@ -41,6 +41,12 @@ class _EventCardState extends State<EventCard> {
     super.initState();
     _addEventToStream();
   }
+
+  // @override
+  // void dispose() {
+  //   _eventController.close();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
