@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         // Successful login
         print('Login successful');
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CommonLayout()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CommonLayout()));
         // Navigate to the home screen or perform other actions
       } else {
         // Failed login

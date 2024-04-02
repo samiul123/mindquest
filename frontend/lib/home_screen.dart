@@ -6,6 +6,8 @@ import 'package:frontend/line_chart_widget.dart';
 import 'package:frontend/trivia_score.dart';
 import 'package:frontend/utils.dart';
 
+import 'common_layout.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -37,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: InkWell(
                   onTap: () {
                     // Handle tap on the third card
-                    print("Play trivia clicked");
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CommonLayout(pageIndex: 0)));
                   },
                   child: const Card(
                     color: CustomColor.purple,

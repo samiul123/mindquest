@@ -5,16 +5,15 @@ import 'package:frontend/utils.dart';
 import 'home_screen.dart';
 
 class CommonLayout extends StatefulWidget {
-  // final Widget body;
-  //
-  // const CommonLayout({required this.body});
+  final int pageIndex;
+
+  const CommonLayout({this.pageIndex = 2, super.key});
 
   @override
   State<StatefulWidget> createState() => _CommonLayoutState();
 }
 
 class _CommonLayoutState extends State<CommonLayout> {
-  late Widget body;
   int _selectedIndex = 0;
 
   final List<Widget> _pageList = [
@@ -28,8 +27,7 @@ class _CommonLayoutState extends State<CommonLayout> {
   @override
   void initState() {
     super.initState();
-    // body = widget.body;
-    _selectedIndex = 2;
+    _selectedIndex = widget.pageIndex;
   }
 
   @override
