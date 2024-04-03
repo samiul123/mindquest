@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/common_layout.dart';
 import 'package:frontend/home_screen.dart';
 import 'package:frontend/signup_screen.dart';
+import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
@@ -133,7 +134,10 @@ class _LoginScreenState extends State<LoginScreen> {
         handleLogin(context);
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.purple,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12)
+        ),
+        backgroundColor: CustomColor.purple,
       ),
       child: const Text('Log In', style: TextStyle(color: Colors.white)),
     );
@@ -144,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text(
-          "Don't have an account?",
+          "Don't have an account? ",
           style: TextStyle(color: Colors.white),
         ),
         GestureDetector(
@@ -198,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         Text(
           'MIND',
-          style: TextStyle(color: Colors.purple, fontSize: 24),
+          style: TextStyle(color: CustomColor.purple, fontSize: 24),
         ),
         Text(
           'QUEST',
