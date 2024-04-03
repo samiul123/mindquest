@@ -62,7 +62,6 @@ class _LineChartWidgetState extends State<LineChartWidget> {
     _addScoreToStream();
   }
 
-
   // @override
   // void dispose() {
   //   _lineChartController.close();
@@ -144,7 +143,8 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                                   labelStyle: TextStyleSpec(
                                       color: MaterialPalette.white)),
                               showAxisLine: true),
-                          ))
+                          defaultRenderer: LineRendererConfig(
+                              includeArea: true, includePoints: true)))
                 ]);
               },
             ),
