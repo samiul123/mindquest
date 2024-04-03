@@ -34,7 +34,7 @@ public class TriviaController {
     @GetMapping("/trivia/next")
     public ResponseEntity<TriviaResponse> getTrivia(@RequestParam String username) throws Exception {
         TriviaResponse trivia = triviaService.getTrivia(username);
-        return new ResponseEntity<>(trivia, HttpStatus.FOUND);
+        return new ResponseEntity<>(trivia, HttpStatus.OK);
     }
 
     @GetMapping("/trivia/agg-score")
