@@ -108,13 +108,14 @@ class _TriviaScreenState extends State<TriviaScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Flexible(
-                          flex: 2,
+                      Positioned(
+                          top: 20,
                           child: Text(
                             triviaData['question'],
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
                           )),
-                      SizedBox(height: 25),
+                      const SizedBox(height: 25),
                       Flexible(
                           flex: 2,
                           child: InkWell(
@@ -128,11 +129,11 @@ class _TriviaScreenState extends State<TriviaScreen> {
                                 child: Center(
                                     child: Text(
                                   triviaData['optionA'],
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                   // fontSize: 24
                                 ))),
                           )),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Flexible(
                           flex: 2,
                           child: InkWell(
@@ -146,11 +147,11 @@ class _TriviaScreenState extends State<TriviaScreen> {
                                 child: Center(
                                     child: Text(
                                   triviaData['optionB'],
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                   // fontSize: 24
                                 ))),
                           )),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Flexible(
                           flex: 2,
                           child: InkWell(
@@ -164,11 +165,11 @@ class _TriviaScreenState extends State<TriviaScreen> {
                                 child: Center(
                                     child: Text(
                                   triviaData['optionC'],
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                   // fontSize: 24
                                 ))),
                           )),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Flexible(
                           flex: 2,
                           child: InkWell(
@@ -182,11 +183,11 @@ class _TriviaScreenState extends State<TriviaScreen> {
                                 child: Center(
                                     child: Text(
                                   triviaData['optionD'],
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                   // fontSize: 24
                                 ))),
                           )),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                       Expanded(
                           flex: 2,
                           child: InkWell(
@@ -202,14 +203,28 @@ class _TriviaScreenState extends State<TriviaScreen> {
                                   _fetchAndSetTrivia();
                                 });
                               },
-                              child: Card(
-                                  color: const Color.fromRGBO(159, 119, 226, 1),
-                                  child: Center(
-                                      child: Text(
-                                    'Next',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 24),
-                                  )))))
+                              child: const Card(
+                                color: CustomColor.purple,
+                                child: Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(16.0),
+                                    child: Row(
+                                      children: [
+                                        Spacer(),
+                                        Text(
+                                          'Next',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 24),
+                                        ),
+                                        Spacer(),
+                                        Icon(Icons.arrow_forward,
+                                            color: Colors.white),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )))
                     ]))));
   }
 }
