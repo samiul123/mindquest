@@ -29,7 +29,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
-                                .requestMatchers("/login/**", "/signup/**", "/events/**", "/trivia/**")
+                                .requestMatchers("/login/**", "/signup/**", "/events/**", "/trivia/**", "/posts/**", "/comments/**")
                                 .permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
