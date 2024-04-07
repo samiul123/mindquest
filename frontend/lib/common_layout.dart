@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/discussion_post_screen.dart';
 import 'package:frontend/trivia_screen_v2.dart';
 import 'package:frontend/utils.dart';
 
@@ -18,7 +19,7 @@ class _CommonLayoutState extends State<CommonLayout> {
 
   final List<Widget> _pageList = [
     const TriviaScreen(),
-    const TriviaScreen(),
+    const DiscussionPostScreen(),
     const HomeScreen(),
     const HomeScreen(),
     const HomeScreen()
