@@ -8,7 +8,8 @@ import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
 
 class DiscussionHomeScreen extends StatefulWidget {
-  const DiscussionHomeScreen({super.key});
+  final Function(int, Widget) replacePage;
+  const DiscussionHomeScreen({super.key, required this.replacePage});
 
   @override
   DiscussionHomeScreenState createState() => DiscussionHomeScreenState();
@@ -79,7 +80,7 @@ class DiscussionHomeScreenState extends State<DiscussionHomeScreen> {
             child: GestureDetector(
               onTap: () {
                 // Navigate to another page
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const DiscussionPostScreen()));
+                  widget.replacePage(1, const DiscussionPostScreen());
               },
               child: const Card(
                 color: CustomColor.lightgrey,

@@ -17,19 +17,37 @@ class CommonLayout extends StatefulWidget {
 
 class _CommonLayoutState extends State<CommonLayout> {
   int _selectedIndex = 0;
+  bool _showBackIcon = false;
 
-  final List<Widget> _pageList = [
-    const TriviaScreen(),
-    const DiscussionHomeScreen(),
-    const HomeScreen(),
-    const HomeScreen(),
-    const HomeScreen()
-  ];
+  late List<Widget> _pageList;
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.pageIndex;
+    _pageList = [
+      const TriviaScreen(),
+      DiscussionHomeScreen(replacePage: _replacePage),
+      const HomeScreen(),
+      const HomeScreen(),
+      const HomeScreen()
+    ];
+  }
+
+  Widget? _buildLeadingIcon() {
+    if (_showBackIcon) {
+      return IconButton(
+        onPressed: () {
+          // Navigate back to the previous screen
+          _replacePage(1, DiscussionHomeScreen(replacePage: _replacePage));
+        },
+        icon: const Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+        ),
+      );
+    }
+    return null;
   }
 
   @override
@@ -40,17 +58,23 @@ class _CommonLayoutState extends State<CommonLayout> {
         appBar: AppBar(
           backgroundColor: CustomColor.purple,
           title: const Text('MindQuest', style: TextStyle(color: Colors.white)),
+          leading: _buildLeadingIcon(),
           centerTitle: true,
-          leading: GestureDetector(
-            onTap: () {
-              print("Profile image clicked");
-            },
-            child: const Icon(
-              Icons.account_circle,
-              size: 30,
-              color: Colors.white,
+          actions: [
+            GestureDetector(
+              onTap: () {
+                print("Profile image clicked");
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.account_circle,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              ),
             ),
-          ),
+          ],
         ),
         // TODO:
         body: _pageList.elementAt(_selectedIndex),
@@ -83,6 +107,26 @@ class _CommonLayoutState extends State<CommonLayout> {
     print("Index: $index");
     setState(() {
       _selectedIndex = index;
+      if (index == 1) {
+        _replacePage(1, DiscussionHomeScreen(replacePage: _replacePage));
+      }
     });
+  }
+
+  void _replacePage(int index, Widget widget) {
+    _pageList[index] = widget;
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    if (widget is DiscussionPostScreen) {
+      setState(() {
+        _showBackIcon = true;
+      });
+    } else {
+      setState(() {
+        _showBackIcon = false;
+      });
+    }
   }
 }
