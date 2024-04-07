@@ -10,6 +10,8 @@ import org.mux.backend.discussion.model.PostCategory;
 import org.mux.backend.discussion.model.PostDto;
 import org.mux.backend.discussion.repository.CommentRepository;
 import org.mux.backend.discussion.repository.DiscussionRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -47,8 +49,8 @@ public class DiscussionService {
                 .build());
     }
 
-    public List<PostDto> getPosts() {
-        return discussionRepo.findAll()
+    public List<PostDto> getPosts(int pageNo) {
+        return discussionRepo.findAll(PageRequest.of(pageNo, 15))
                 .stream()
                 .map(postEntity -> PostDto.builder()
                         .id(postEntity.getId())

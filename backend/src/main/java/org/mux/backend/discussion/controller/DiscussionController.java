@@ -24,8 +24,8 @@ public class DiscussionController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDto>> getPosts() {
-        List<PostDto> posts = discussionService.getPosts();
+    public ResponseEntity<List<PostDto>> getPosts(@RequestParam int pageNo) {
+        List<PostDto> posts = discussionService.getPosts(pageNo);
         return ResponseEntity.ok(posts);
     }
 
