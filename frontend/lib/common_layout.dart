@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/breathing.dart';
 import 'package:frontend/discussion_home_screen.dart';
 import 'package:frontend/discussion_post_details.dart';
 import 'package:frontend/discussion_post_screen.dart';
@@ -30,7 +31,7 @@ class _CommonLayoutState extends State<CommonLayout> {
       const TriviaScreen(),
       DiscussionHomeScreen(replacePage: _replacePage),
       const HomeScreen(),
-      const HomeScreen(),
+      BreathingScreen(),
       const HomeScreen()
     ];
   }
