@@ -42,7 +42,10 @@ class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
       if (response.statusCode == 200) {
         // Successful login
         print('Post created');
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CommonLayout(pageIndex: 1)));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const CommonLayout(pageIndex: 1)));
         // Navigate to the home screen or perform other actions
       } else {
         // Failed login
@@ -86,152 +89,157 @@ class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
           padding: const EdgeInsets.all(5),
           child: Center(
               child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: Card(
-                            color: CustomColor.lightgrey,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: TextField(
-                                style: const TextStyle(color: Colors.white),
-                                controller: subjectController,
-                                decoration: const InputDecoration(
-                                    hintStyle: TextStyle(color: Colors.white),
-                                    hintText: 'Subject',
-                                    border: InputBorder.none),
-                              ),
-                            ))),
-                    const SizedBox(height: 5),
-                    Expanded(
-                        flex: 2,
-                        child: Card(
-                            color: CustomColor.lightgrey,
-                            child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: TextField(
-                                  style: const TextStyle(color: Colors.white),
-                                  controller: bodyController,
-                                  decoration: const InputDecoration(
-                                      hintStyle: TextStyle(color: Colors.white),
-                                      hintText: 'What\'s on your mind?',
-                                      border: InputBorder.none),
-                                )))),
-                    const SizedBox(height: 10),
-                    Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Card(
-                          color: CustomColor.lightgrey,
-                          child: Column(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: Card(
+                        color: CustomColor.lightgrey,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: TextField(
+                            style: const TextStyle(color: Colors.white),
+                            controller: subjectController,
+                            decoration: const InputDecoration(
+                                hintStyle: TextStyle(color: Colors.white),
+                                hintText: 'Subject',
+                                border: InputBorder.none),
+                          ),
+                        ))),
+                const SizedBox(height: 5),
+                Expanded(
+                    flex: 2,
+                    child: Card(
+                        color: CustomColor.lightgrey,
+                        child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: TextField(
+                              style: const TextStyle(color: Colors.white),
+                              controller: bodyController,
+                              decoration: const InputDecoration(
+                                  hintStyle: TextStyle(color: Colors.white),
+                                  hintText: 'What\'s on your mind?',
+                                  border: InputBorder.none),
+                            )))),
+                const SizedBox(height: 10),
+                Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Card(
+                      color: CustomColor.lightgrey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text('Choose Category',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16))),
+                          const SizedBox(height: 10),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Text('Choose Category',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 16))),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        postCategory = "VENTING";
-                                      });
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blue,
-                                    ),
-                                    child: const Text('Venting',
-                                        style: TextStyle(color: Colors.black)),
-                                  ),
-                                  const SizedBox(width: 20),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        postCategory = "QUESTIONING";
-                                      });
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.green,
-                                    ),
-                                    child: const Text('Questioning',
-                                        style: TextStyle(color: Colors.black)),
-                                  ),
-                                  const SizedBox(width: 20),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        postCategory = "SUPPORT";
-                                      });
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.red,
-                                    ),
-                                    child: const Text('Support',
-                                        style: TextStyle(color: Colors.black)),
-                                  )
-                                ],
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    postCategory = "VENTING";
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: postCategory == "VENTING"
+                                      ? CustomColor.purple
+                                      : Colors.blue,
+                                ),
+                                child: const Text('Venting',
+                                    style: TextStyle(color: Colors.white)),
                               ),
-                              const SizedBox(height: 10)
+                              const SizedBox(width: 20),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    postCategory = "QUESTIONING";
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: postCategory == "QUESTIONING"
+                                      ? CustomColor.purple
+                                      : Colors.green,
+                                ),
+                                child: const Text('Questioning',
+                                    style: TextStyle(color: Colors.white)),
+                              ),
+                              const SizedBox(width: 20),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    postCategory = "SUPPORT";
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: postCategory == "SUPPORT"
+                                      ? CustomColor.purple
+                                      : Colors.red,
+                                ),
+                                child: const Text('Support',
+                                    style: TextStyle(color: Colors.white)),
+                              )
                             ],
                           ),
-                        )),
-                    const SizedBox(height: 100),
-                    Expanded(
-                        flex: 1,
-                        child: Card(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Handle login logic
-                              handleSubmit();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              fixedSize: const Size(200, 30),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12)),
-                              backgroundColor: CustomColor.purple,
-                            ),
-                            child: const Text('Submit',
-                                style:
-                                    TextStyle(color: Colors.white, fontSize: 20)),
-                          ),
-                        )),
-                    if (showError)
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        color: Colors.red,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              errorMessage,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                // Close the error message
-                                closeError();
-                              },
-                              child: const Icon(
-                                Icons.close,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
+                          const SizedBox(height: 10)
+                        ],
+                      ),
+                    )),
+                const SizedBox(height: 100),
+                Expanded(
+                    flex: 1,
+                    child: Card(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Handle login logic
+                          handleSubmit();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(200, 30),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          backgroundColor: CustomColor.purple,
                         ),
-                      )
-                  ],
-                ),
-             )
-          ),
+                        child: const Text('Submit',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20)),
+                      ),
+                    )),
+                if (showError)
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    color: Colors.red,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          errorMessage,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            // Close the error message
+                            closeError();
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+              ],
+            ),
+          )),
         ));
   }
 }
