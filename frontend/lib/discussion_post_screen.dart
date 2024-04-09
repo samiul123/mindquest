@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/utils.dart';
+import 'package:http/http.dart' as http;
+
+import 'common_layout.dart';
 
 class DiscussionPostScreen extends StatefulWidget {
   const DiscussionPostScreen({super.key});
@@ -11,6 +17,65 @@ class DiscussionPostScreen extends StatefulWidget {
 class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
   TextEditingController subjectController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
+  late String postCategory;
+  bool showError = false;
+  late String errorMessage;
+
+  Future<void> handleSubmit() async {
+    final String subject = subjectController.text;
+    final String body = bodyController.text;
+
+    // Replace with your backend API URL
+    String apiUrl = '${dotenv.env["BASE_URL"]}/posts';
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+
+    try {
+      final response = await http.post(Uri.parse(apiUrl),
+          body: jsonEncode({
+            'subject': subject,
+            'body': body,
+            'postCategory': postCategory,
+            'username': 'sa001'
+          }),
+          headers: headers);
+      if (!mounted) return;
+      if (response.statusCode == 200) {
+        // Successful login
+        print('Post created');
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CommonLayout(pageIndex: 1)));
+        // Navigate to the home screen or perform other actions
+      } else {
+        // Failed login
+        print('Post creation failed');
+        // Show an error message or perform other actions
+        setState(() {
+          showError = true;
+          errorMessage = response.body;
+        });
+      }
+    } catch (error) {
+      // Handle network or other errors
+      print('Error: $error');
+      setState(() {
+        showError = true;
+        errorMessage = "Server is busy. Please try again later.";
+      });
+    }
+  }
+
+  void closeError() {
+    setState(() {
+      showError = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    postCategory = "";
+    showError = false;
+    errorMessage = "";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +141,11 @@ class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        postCategory = "VENTING";
+                                      });
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.blue,
                                     ),
@@ -85,7 +154,11 @@ class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
                                   ),
                                   const SizedBox(width: 20),
                                   ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        postCategory = "QUESTIONING";
+                                      });
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.green,
                                     ),
@@ -94,7 +167,11 @@ class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
                                   ),
                                   const SizedBox(width: 20),
                                   ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        postCategory = "SUPPORT";
+                                      });
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.red,
                                     ),
@@ -114,7 +191,7 @@ class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               // Handle login logic
-                              // handleLogin(context);
+                              handleSubmit();
                             },
                             style: ElevatedButton.styleFrom(
                               fixedSize: const Size(200, 30),
@@ -127,6 +204,30 @@ class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
                                     TextStyle(color: Colors.white, fontSize: 20)),
                           ),
                         )),
+                    if (showError)
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        color: Colors.red,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              errorMessage,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                // Close the error message
+                                closeError();
+                              },
+                              child: const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                   ],
                 ),
              )
