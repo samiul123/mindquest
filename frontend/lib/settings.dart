@@ -192,7 +192,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ],
                                 ))),
                       ),
-                      const SizedBox(height: 350),
+                      const SizedBox(height: 150),
+                      //Log-out:
+                      Flexible(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: () {
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => workInProgressAlert,
+                              );
+                            },
+                            child: const Card(
+                                color: CustomColor.purple,
+                                child: Center(
+                                    child: Text(
+                                      "Log Out",
+                                      style: TextStyle(color: Colors.white, fontSize: 20),
+                                    ))),
+                          )),
+                      const SizedBox(height: 150),
                       // Old dark mode switch:
                       // Flexible(
                       //   flex: 2,
