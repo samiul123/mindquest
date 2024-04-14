@@ -209,7 +209,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     });
                                   },
                                 ),
-                                const SizedBox(width: 25),
+                                const SizedBox(width: 10),
                                 const Text("Notifications ",
                                     style: TextStyle(color: Colors.white, fontSize: 20),
                                     textAlign: TextAlign.center,
