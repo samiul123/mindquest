@@ -12,4 +12,19 @@ class Date {
     DateFormat format = DateFormat('MM/dd/yyyy');
     return format.parse(dateString);
   }
+
+  static String getTimeDifference(DateTime postedTime) {
+    Duration difference = DateTime.now().difference(postedTime);
+    if (difference.inSeconds < 60) {
+      return '${difference.inSeconds.abs()}s';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes.abs()}m';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours.abs()}h';
+    } else if (difference.inDays < 30) {
+      return '${difference.inDays.abs()}d';
+    } else {
+      return DateFormat.yMMMd().format(postedTime);
+    }
+  }
 }

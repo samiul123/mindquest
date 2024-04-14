@@ -12,6 +12,8 @@ import org.mux.backend.discussion.repository.CommentRepository;
 import org.mux.backend.discussion.repository.DiscussionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -79,12 +81,13 @@ public class DiscussionService {
                 .build());
     }
 
-    public List<CommentDto> getComments(Integer postId) {
-        List<CommentEntity> comments = commentRepository.findByPostId(postId);
+    public Page<CommentDto> getComments(int postId, int pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, 15, Sort.by("createdAt").descending());
+        Page<CommentEntity> comments = commentRepository.findByPostId(postId, pageable);
         if (comments == null) {
             throw new EntityNotFoundException("Comments for postId " + postId + " not found");
         }
-        return comments.stream().map(comment ->
+        return comments.map(comment ->
                 CommentDto.builder()
                         .id(comment.getId())
                         .body(comment.getBody())
@@ -92,6 +95,6 @@ public class DiscussionService {
                         .postId(comment.getPost().getId())
                         .username(comment.getUserEntity().getUserName())
                         .build()
-        ).collect(Collectors.toList());
+        );
     }
 }

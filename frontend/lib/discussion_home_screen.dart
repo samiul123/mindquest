@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/discussion_post.dart';
+import 'package:frontend/discussion_post_details.dart';
 import 'package:frontend/discussion_post_screen.dart';
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
@@ -71,47 +72,54 @@ class DiscussionHomeScreenState extends State<DiscussionHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[850],
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Top section
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
-            child: GestureDetector(
-              onTap: () {
-                // Navigate to another page
+      body: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Top section
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.1,
+              child: GestureDetector(
+                onTap: () {
+                  // Navigate to another page
                   widget.replacePage(1, const DiscussionPostScreen());
-              },
-              child: const Card(
-                color: CustomColor.lightgrey,
-                child: Center(
-                  child: Text(
-                    "What's on your mind?",
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                },
+                child: const Card(
+                  color: CustomColor.lightgrey,
+                  child: Center(
+                    child: Text(
+                      "What's on your mind?",
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          // Bottom section
-          const SizedBox(height: 5),
-          _discussionPosts.isEmpty
-              ? const Center(child: CircularProgressIndicator())
-              : Expanded(
-                  child: NotificationListener<ScrollNotification>(
-                    onNotification: (ScrollNotification scrollInfo) {
-                      if (!_isLoading &&
-                          scrollInfo.metrics.pixels ==
-                              scrollInfo.metrics.maxScrollExtent) {
-                        _loadDiscussionPosts();
-                      }
-                      return true;
-                    },
-                    child: ListView.builder(
-                      itemCount: _discussionPosts.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index < _discussionPosts.length) {
-                          return Card(
+            // Bottom section
+            const SizedBox(height: 5),
+            _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Expanded(
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollInfo) {
+                  if (!_isLoading &&
+                      scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent) {
+                    _loadDiscussionPosts();
+                  }
+                  return true;
+                },
+                child: ListView.builder(
+                  itemCount: _discussionPosts.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index < _discussionPosts.length) {
+                      return InkWell(
+                          onTap: () {
+                            print("Post tapped");
+                            widget.replacePage(1, DiscussionPostDetails(post: _discussionPosts[index]));
+                          },
+                          child: Card(
                             color: CustomColor.lightgrey,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -120,7 +128,7 @@ class DiscussionHomeScreenState extends State<DiscussionHomeScreen> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         _discussionPosts[index].subject,
@@ -154,7 +162,7 @@ class DiscussionHomeScreenState extends State<DiscussionHomeScreen> {
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color:
-                                                Colors.white, // Set text color
+                                            Colors.white, // Set text color
                                           ),
                                         ),
                                       ),
@@ -171,17 +179,19 @@ class DiscussionHomeScreenState extends State<DiscussionHomeScreen> {
                                 ),
                               ],
                             ),
-                          );
-                        } else if (_isLoading){
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      },
-                    ),
-                  ),
+                          )
+                      );
+                    } else if (_isLoading){
+                      return const Center(
+                          child: CircularProgressIndicator());
+                    }
+                  },
                 ),
-        ],
-      ),
+              ),
+            ),
+          ],
+        ),
+      )
     );
   }
 }

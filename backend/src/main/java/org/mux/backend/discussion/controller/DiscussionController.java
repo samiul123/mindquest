@@ -3,6 +3,7 @@ package org.mux.backend.discussion.controller;
 import org.mux.backend.discussion.model.CommentDto;
 import org.mux.backend.discussion.model.PostDto;
 import org.mux.backend.discussion.service.DiscussionService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +37,8 @@ public class DiscussionController {
     }
 
     @GetMapping("/comments")
-    public ResponseEntity<List<CommentDto>> getComment(@RequestParam Integer postId) {
-        List<CommentDto> comments = discussionService.getComments(postId);
+    public ResponseEntity<Page<CommentDto>> getComment(@RequestParam int postId, @RequestParam int pageNo) {
+        Page<CommentDto> comments = discussionService.getComments(postId, pageNo);
         return ResponseEntity.ok(comments);
     }
 }
