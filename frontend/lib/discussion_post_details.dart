@@ -7,7 +7,7 @@ import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
 
 class DiscussionPostDetails extends StatefulWidget {
-  final DiscussionPost post;
+  final dynamic post;
 
   const DiscussionPostDetails({required this.post, super.key});
 
@@ -16,7 +16,7 @@ class DiscussionPostDetails extends StatefulWidget {
 }
 
 class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
-  late DiscussionPost post;
+  late dynamic post;
   List<dynamic> _comments = [];
   bool _isLoading = false;
   Color _sendIconColor = Colors.grey;
@@ -37,6 +37,12 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
     _loadComments(0);
   }
 
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   Future<dynamic> _fetchComments(int postId, int page) async {
     String apiUrl =
         '${dotenv.env["BASE_URL"]}/comments?postId=$postId&pageNo=$page';
@@ -54,9 +60,7 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
     });
 
     try {
-      final dynamic comments = await _fetchComments(post.id, pageNo);
-      print("Post id: ${post.id}, Current Page: $pageNo");
-      print("COMMENTS: $comments");
+      final dynamic comments = await _fetchComments(post['id'], pageNo);
       setState(() {
         _commentPage = comments;
         if (comments['first']) {
@@ -64,7 +68,6 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
         } else {
           _comments.addAll(comments['content']);
         }
-        _showDownArrow = _scrollController.position.hasPixels;
         _isLoading = false;
       });
     } catch (e) {
@@ -86,7 +89,7 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
     try {
       final response = await http.post(Uri.parse(apiUrl),
           body: jsonEncode(
-              {'postId': post.id, 'body': comment, 'username': 'sa001'}),
+              {'postId': post['id'], 'body': comment, 'username': 'sa001'}),
           headers: headers);
       if (!mounted) return;
       if (response.statusCode == 200) {
@@ -136,6 +139,7 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollListener());
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.grey[850],
@@ -160,7 +164,7 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
                           color: Colors.white,
                         ),
                         const SizedBox(width: 5),
-                        Text(post.username,
+                        Text(post['username'],
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold)),
@@ -169,7 +173,7 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
                           alignment: Alignment.centerRight,
                           child: Text(
                               Date.getTimeDifference(
-                                  DateTime.parse(post.createdAt)),
+                                  DateTime.parse(post['createdAt'])),
                               style: const TextStyle(color: Colors.white)),
                         ))
                       ],
@@ -181,7 +185,7 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
                     ),
                     Row(
                       children: [
-                        Text(post.subject,
+                        Text(post['subject'],
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold)),
@@ -191,7 +195,7 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
                           child: Container(
                             decoration: BoxDecoration(
                               color: () {
-                                switch (post.postCategory) {
+                                switch (post['postCategory']) {
                                   case "Venting":
                                     return Colors.blue;
                                   case "Questioning":
@@ -202,24 +206,22 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
                                     return Colors.black;
                                 }
                               }(),
-                              // Set the background color
-                              borderRadius: BorderRadius.circular(
-                                  15), // Set the border radius
+                              borderRadius: BorderRadius.circular(15),
                             ),
                             padding: const EdgeInsets.all(5),
                             // Add padding for spacing
                             child: Text(
-                              post.postCategory,
+                              post['postCategory'],
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white, // Set text color
+                                color: Colors.white,
                               ),
                             ),
                           ),
                         ))
                       ],
                     ),
-                    Text(post.body,
+                    Text(post['body'],
                         style: const TextStyle(color: Colors.white)),
                   ],
                 ),
@@ -231,7 +233,7 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
                 Text(' Comments', style: TextStyle(color: Colors.white))
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
@@ -323,7 +325,6 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
                         GestureDetector(
                           onTap: () {
                             _onSendClicked();
-                            // _loadComments();
                           },
                           child: Icon(Icons.send, color: _sendIconColor),
                         )

@@ -51,17 +51,16 @@ public class DiscussionService {
                 .build());
     }
 
-    public List<PostDto> getPosts(int pageNo) {
-        return discussionRepo.findAll(PageRequest.of(pageNo, 15))
-                .stream()
+    public Page<PostDto> getPosts(int pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, 15, Sort.by("createdAt").descending());
+        return discussionRepo.findAll(pageable)
                 .map(postEntity -> PostDto.builder()
                         .id(postEntity.getId())
                         .subject(postEntity.getSubject())
                         .body(postEntity.getBody())
                         .postCategory(postEntity.getPostCategory())
                         .username(postEntity.getUserEntity().getUserName())
-                        .createdAt(postEntity.getCreatedAt()).build())
-                .collect(Collectors.toList());
+                        .createdAt(postEntity.getCreatedAt()).build());
     }
 
     public void createComment(CommentDto commentDto) {
