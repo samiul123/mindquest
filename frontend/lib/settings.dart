@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend/utils.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:frontend/globals.dart' as globals;
 
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:frontend/utils.dart';
-// import 'package:http/http.dart' as http;
+import 'login_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -16,6 +18,9 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+
+  bool loggingOut = false, cancelLogout = false;
+
   @override
   void initState() {
     super.initState();
@@ -50,9 +55,62 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
 
+  Future<dynamic> handleLogout(BuildContext context) async {
+    String apiUrl = '${dotenv.env["BASE_URL"]}/trivia/submit';
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode({
+          'username': 'sa001',
+        }),
+        headers: headers);
+    if (response.statusCode == 200) {
+      setState(() {
+        // Navigate back to the log in page
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+      });
+    } else {
+      throw Exception('Failed to submit');
+    }
+  }
+
+  void logoutConfirm(BuildContext context){
+    loggingOut = true;
+    cancelLogout = false;
+    Navigator.pop(context, 'OK');
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()));
+  }
+  void logoutCancel(BuildContext context){
+    loggingOut = false;
+    cancelLogout = true;
+    Navigator.pop(context, 'Cancel');
+  }
+  // Function to return an AlertDialog to get a confirmation to log out
+  AlertDialog confirmLogout(BuildContext context){
+    return AlertDialog(
+      title: const Text('Confirmation:', style: TextStyle(color: Colors.white)),
+      content: const Text('You are about to log out, are you sure? (someone write better text)', style: TextStyle(color: Colors.white)),
+      backgroundColor: CustomColor.purple,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => logoutCancel(context),
+          child: const Text('Cancel', style: TextStyle(color: Colors.white, fontSize: 20),),
+        ),
+        TextButton(
+          onPressed: () => logoutConfirm(context),
+          child: const Text('OK', style: TextStyle(color: Colors.white, fontSize: 20),),
+        ),
+      ],
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    loggingOut = false;
+    cancelLogout = false;
     // This gets the WIP (Work In Progress) Alert Dialogue from globals.dart
     AlertDialog workInProgressAlert = globals.getWIPAlert(context);
 
@@ -198,10 +256,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           flex: 1,
                           child: InkWell(
                             onTap: () {
+                              // Handle log out (add confirm button?):
+                              //handleLogout(context);
+                              //Temporary:
+                              // Navigate back to the log in page
                               showDialog<String>(
                                 context: context,
-                                builder: (BuildContext context) => workInProgressAlert,
+                                builder: (BuildContext context) => confirmLogout(context),
                               );
+
+                              loggingOut = false;
+                              cancelLogout = false;
                             },
                             child: const Card(
                                 color: CustomColor.purple,
@@ -243,74 +308,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       //   // )
                       // ),
                       // const SizedBox(height: 10),
-                      /*
-                      Flexible(
-                          flex: 2,
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                //selectedAnswer = 'C';
-                              });
-                            },
-                            child: Card(
-                                color: Colors.grey,
-                                child: Center(
-                                    child: Text(
-                                      "TEXT_3",
-                                      style: const TextStyle(color: Colors.white),
-                                      // fontSize: 24
-                                    ))),
-                          )),
-                      const SizedBox(height: 10),
-                      Flexible(
-                          flex: 2,
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                //selectedAnswer = 'D';
-                              });
-                            },
-                            child: Card(
-                                color: Colors.grey,
-                                child: Center(
-                                    child: Text(
-                                      "TEXT_4",
-                                      style: const TextStyle(color: Colors.white),
-                                      // fontSize: 24
-                                    ))),
-                          )),
-                      const SizedBox(height: 40),
-                      Expanded(
-                          flex: 2,
-                          child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  //
-                                });
-                              },
-                              child: const Card(
-                                color: CustomColor.purple,
-                                child: Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(16.0),
-                                    child: Row(
-                                      children: [
-                                        Spacer(),
-                                        Text(
-                                          'Next',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 24),
-                                        ),
-                                        Spacer(),
-                                        Icon(Icons.arrow_forward,
-                                            color: Colors.white),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )))
-*/
-                    ]))));
+                    ]
+                ))));
   }
 }
