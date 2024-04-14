@@ -53,14 +53,12 @@ class DiscussionHomeScreenState extends State<DiscussionHomeScreen> {
     });
 
     try {
-      final dynamic posts =
-      await fetchDiscussionPosts(pageNo);
+      final dynamic posts = await fetchDiscussionPosts(pageNo);
       setState(() {
         _currentPage = posts;
         if (_currentPage['first']) {
           _discussionPosts = _currentPage['content'];
-        }
-        else {
+        } else {
           _discussionPosts.addAll(_currentPage['content']);
         }
         _isLoading = false;
@@ -86,10 +84,7 @@ class DiscussionHomeScreenState extends State<DiscussionHomeScreen> {
             children: [
               // Top section
               SizedBox(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.1,
+                height: MediaQuery.of(context).size.height * 0.1,
                 child: GestureDetector(
                   onTap: () {
                     // Navigate to another page
@@ -111,95 +106,125 @@ class DiscussionHomeScreenState extends State<DiscussionHomeScreen> {
               _isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : Expanded(
-                child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: _isLoading
-                      ? _discussionPosts.length + 1
-                      : _discussionPosts.length,
-                  itemBuilder: (context, index) {
-                    if (index < _discussionPosts.length) {
-                      return InkWell(
-                          onTap: () {
-                            print("Post tapped");
-                            widget.replacePage(1, DiscussionPostDetails(
-                                post: _discussionPosts[index]));
-                          },
-                          child: Card(
-                            color: CustomColor.lightgrey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        _discussionPosts[index]['subject'],
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: () {
-                                            switch (_discussionPosts[index]
-                                            ['postCategory']) {
-                                              case "Venting":
-                                                return Colors.blue;
-                                              case "Questioning":
-                                                return Colors.green;
-                                              case "Support":
-                                                return Colors.red;
-                                              default:
-                                                return Colors.black;
-                                            }
-                                          }(),
-                                          // Set the background color
-                                          borderRadius: BorderRadius.circular(
-                                              15), // Set the border radius
-                                        ),
-                                        padding: const EdgeInsets.all(8),
-                                        // Add padding for spacing
-                                        child: Text(
-                                          _discussionPosts[index]['postCategory'],
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors
-                                                .white, // Set text color
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: _isLoading
+                            ? _discussionPosts.length + 1
+                            : _discussionPosts.length,
+                        itemBuilder: (context, index) {
+                          if (index < _discussionPosts.length) {
+                            return InkWell(
+                                onTap: () {
+                                  print("Post tapped");
+                                  widget.replacePage(
+                                      1,
+                                      DiscussionPostDetails(
+                                          post: _discussionPosts[index]));
+                                },
+                                child: Card(
+                                    color: CustomColor.lightgrey,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    _discussionPosts[index]
+                                                        ['subject'],
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                      Date.getTimeDifference(
+                                                          DateTime.parse(
+                                                              _discussionPosts[
+                                                                      index][
+                                                                  'createdAt'])),
+                                                      style: const TextStyle(
+                                                          color: Colors.white)),
+                                                ],
+                                              ),
+                                              Expanded(
+                                                  child: Align(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: () {
+                                                      switch (_discussionPosts[
+                                                              index]
+                                                          ['postCategory']) {
+                                                        case "Venting":
+                                                          return Colors.blue;
+                                                        case "Questioning":
+                                                          return Colors.green;
+                                                        case "Support":
+                                                          return Colors.red;
+                                                        default:
+                                                          return Colors.black;
+                                                      }
+                                                    }(),
+                                                    // Set the background color
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15), // Set the border radius
+                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.all(8),
+                                                  // Add padding for spacing
+                                                  child: Text(
+                                                    _discussionPosts[index]
+                                                        ['postCategory'],
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors
+                                                          .white, // Set text color
+                                                    ),
+                                                  ),
+                                                ),
+                                              ))
+                                            ],
                                           ),
-                                        ),
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            _discussionPosts[index]['body'],
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    _discussionPosts[index]['body'],
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                      );
-                    } else if (_isLoading) {
-                      return const Center(
-                          child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ),
+                                    )));
+                          } else if (_isLoading) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                        },
+                      ),
+                    ),
               const SizedBox(height: 10),
               if (_showDownArrow)
                 const Icon(Icons.arrow_drop_down_outlined, color: Colors.white),
             ],
           ),
-        )
-    );
+        ));
   }
 
   void _scrollListener() {
