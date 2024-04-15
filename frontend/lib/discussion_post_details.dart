@@ -349,7 +349,7 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
       });
     }
     if (currentScroll == maxScroll) {
-      if (!_commentPage['last']) {
+      if (_commentPage != null && !_commentPage['last']) {
         _loadComments(_commentPage['number'] + 1);
       }
     }

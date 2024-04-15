@@ -228,22 +228,24 @@ class DiscussionHomeScreenState extends State<DiscussionHomeScreen> {
   }
 
   void _scrollListener() {
-    double currentScroll = _scrollController.position.pixels;
-    double maxScroll = _scrollController.position.maxScrollExtent;
+    if (_scrollController.hasClients) {
+      double currentScroll = _scrollController.position.pixels;
+      double maxScroll = _scrollController.position.maxScrollExtent;
 
-    if (maxScroll - currentScroll <= 50) {
-      setState(() {
-        _showDownArrow = false;
-      });
-    } else {
-      setState(() {
-        _showDownArrow = true;
-      });
-    }
+      if (maxScroll - currentScroll <= 50) {
+        setState(() {
+          _showDownArrow = false;
+        });
+      } else {
+        setState(() {
+          _showDownArrow = true;
+        });
+      }
 
-    if (currentScroll == maxScroll) {
-      if (!_currentPage['last']) {
-        _loadDiscussionPosts(_currentPage['number'] + 1);
+      if (currentScroll == maxScroll) {
+        if (!_currentPage['last']) {
+          _loadDiscussionPosts(_currentPage['number'] + 1);
+        }
       }
     }
   }
