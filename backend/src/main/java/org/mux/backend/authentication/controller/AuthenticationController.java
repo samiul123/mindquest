@@ -76,4 +76,9 @@ public class AuthenticationController {
         userRepository.save(user);
         return new ResponseEntity<>("User is registered successfully!", HttpStatus.OK);
     }
+
+    @PostMapping("/validate-token")
+    public void validateAccessToken() {
+
+    }
 }
