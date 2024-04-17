@@ -27,7 +27,6 @@ class _EventCardState extends State<EventCard> {
 
   static Future<List<dynamic>> _fetchEvent() async {
     String? accessToken = await SecureStorage().storage.read(key: 'accessToken');
-    print("Access token: $accessToken");
     String apiUrl = '${dotenv.env["BASE_URL"]}/events/current-week';
     Map<String, String> headers = {'Authorization': '$accessToken'};
     final response = await http.get(Uri.parse(apiUrl), headers: headers);
