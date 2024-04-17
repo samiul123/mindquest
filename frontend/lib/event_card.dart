@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/secure_storage.dart';
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -17,14 +19,18 @@ class EventCard extends StatefulWidget {
 }
 
 class _EventCardState extends State<EventCard> {
+  final secureStorage = const FlutterSecureStorage();
   static final StreamController<List<dynamic>> _eventController =
       StreamController.broadcast();
 
   Stream<List<dynamic>> get _eventStream => _eventController.stream;
 
   static Future<List<dynamic>> _fetchEvent() async {
+    String? accessToken = await SecureStorage().storage.read(key: 'accessToken');
+    print("Access token: $accessToken");
     String apiUrl = '${dotenv.env["BASE_URL"]}/events/current-week';
-    final response = await http.get(Uri.parse(apiUrl));
+    Map<String, String> headers = {'Authorization': '$accessToken'};
+    final response = await http.get(Uri.parse(apiUrl), headers: headers);
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {

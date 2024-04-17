@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/discussion_post.dart';
+import 'package:frontend/secure_storage.dart';
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
 
@@ -44,9 +45,11 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
   }
 
   Future<dynamic> _fetchComments(int postId, int page) async {
+    String? accessToken = await SecureStorage().storage.read(key: 'accessToken');
+    Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': '$accessToken'};
     String apiUrl =
         '${dotenv.env["BASE_URL"]}/comments?postId=$postId&pageNo=$page';
-    final response = await http.get(Uri.parse(apiUrl));
+    final response = await http.get(Uri.parse(apiUrl), headers: headers);
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
@@ -84,12 +87,13 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
 
     // Replace with your backend API URL
     String apiUrl = '${dotenv.env["BASE_URL"]}/comments';
-    Map<String, String> headers = {'Content-Type': 'application/json'};
+    String? accessToken = await SecureStorage().storage.read(key: 'accessToken');
+    Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': '$accessToken'};
 
     try {
       final response = await http.post(Uri.parse(apiUrl),
           body: jsonEncode(
-              {'postId': post['id'], 'body': comment, 'username': 'sa001'}),
+              {'postId': post['id'], 'body': comment}),
           headers: headers);
       if (!mounted) return;
       if (response.statusCode == 200) {

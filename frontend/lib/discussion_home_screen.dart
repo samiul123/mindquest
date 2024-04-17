@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/discussion_post_details.dart';
 import 'package:frontend/discussion_post_screen.dart';
+import 'package:frontend/secure_storage.dart';
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
 
@@ -38,8 +39,10 @@ class DiscussionHomeScreenState extends State<DiscussionHomeScreen> {
   }
 
   Future<dynamic> fetchDiscussionPosts(int page) async {
+    String? accessToken = await SecureStorage().storage.read(key: 'accessToken');
+    Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': '$accessToken'};
     String apiUrl = '${dotenv.env["BASE_URL"]}/posts?pageNo=$page';
-    final response = await http.get(Uri.parse(apiUrl));
+    final response = await http.get(Uri.parse(apiUrl), headers: headers);
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {

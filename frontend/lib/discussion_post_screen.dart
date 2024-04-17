@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend/secure_storage.dart';
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,8 +27,9 @@ class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
     final String body = bodyController.text;
 
     // Replace with your backend API URL
+    String? accessToken = await SecureStorage().storage.read(key: 'accessToken');
+    Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': '$accessToken'};
     String apiUrl = '${dotenv.env["BASE_URL"]}/posts';
-    Map<String, String> headers = {'Content-Type': 'application/json'};
 
     try {
       final response = await http.post(Uri.parse(apiUrl),
@@ -35,7 +37,6 @@ class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
             'subject': subject,
             'body': body,
             'postCategory': postCategory,
-            'username': 'sa001'
           }),
           headers: headers);
       if (!mounted) return;

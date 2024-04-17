@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/common_layout.dart';
 import 'package:frontend/home_screen.dart';
+import 'package:frontend/secure_storage.dart';
 import 'package:frontend/signup_screen.dart';
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
@@ -46,7 +48,9 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
       if (response.statusCode == 200) {
         // Successful login
-        print('Login successful');
+        String? accessToken = response.headers['authorization'];
+        print('Login successful: $accessToken');
+        await SecureStorage().storage.write(key: 'accessToken', value: accessToken);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CommonLayout()));
         // Navigate to the home screen or perform other actions
       } else {

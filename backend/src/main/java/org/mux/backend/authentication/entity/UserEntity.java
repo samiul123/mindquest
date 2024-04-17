@@ -16,7 +16,7 @@ public class UserEntity {
     private String email;
     @Column(nullable = false)
     private String password;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<RoleEntity> roles;
 
     public Integer getId() {

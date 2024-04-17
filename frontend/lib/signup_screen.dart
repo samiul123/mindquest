@@ -47,7 +47,7 @@ class _SignupScreenState extends State<SignupScreen> {
         print('sign up successful');
         // Navigate to the home screen or perform other actions
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const CommonLayout()));
+            context, MaterialPageRoute(builder: (context) => const LoginScreen()));
       } else {
         // Failed login
         print('Sign up failed');

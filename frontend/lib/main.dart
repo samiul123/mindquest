@@ -3,9 +3,11 @@ import 'package:frontend/breathing.dart';
 import 'package:frontend/common_layout.dart';
 import 'package:frontend/login_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend/secure_storage.dart';
 
 
 Future main() async {
+  SecureStorage();
   await dotenv.load(fileName: '.env');
   runApp(const MyApp());
 }
@@ -16,6 +18,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // SecureStorage();
     return MaterialApp(
       title: 'MindQuest',
       theme: ThemeData(
@@ -37,7 +40,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: CommonLayout(),
+      home: LoginScreen(),
     );
   }
 }

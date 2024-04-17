@@ -5,6 +5,7 @@ import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/painting/text_style.dart' as FlutterTextStyle;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend/secure_storage.dart';
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -37,8 +38,9 @@ class _LineChartWidgetState extends State<LineChartWidget> {
 
   static Future<List<dynamic>> _fetchData() async {
     //TODO: change username
-    String apiUrl = '${dotenv.env["BASE_URL"]}/trivia/agg-score?username=sa001';
-    final response = await http.get(Uri.parse(apiUrl));
+    String apiUrl = '${dotenv.env["BASE_URL"]}/trivia/agg-score';
+    Map<String, String> headers = {'Authorization': '${await SecureStorage().storage.read(key: 'accessToken')}'};
+    final response = await http.get(Uri.parse(apiUrl), headers: headers);
     if (response.statusCode == 200) {
       // setState(() {
       //   events = json.decode(response.body);

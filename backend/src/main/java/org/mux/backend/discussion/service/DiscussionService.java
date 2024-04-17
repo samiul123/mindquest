@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -37,7 +39,9 @@ public class DiscussionService {
     }
 
     public void createPost(PostDto postDto) {
-        UserEntity userEntity = userRepository.findByUserName(postDto.getUsername());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        UserEntity userEntity = userRepository.findByUserName(username);
         if (userEntity == null) {
             throw new EntityNotFoundException("Username " + postDto.getUsername() + " not found");
         }
@@ -64,7 +68,9 @@ public class DiscussionService {
     }
 
     public void createComment(CommentDto commentDto) {
-        UserEntity userEntity = userRepository.findByUserName(commentDto.getUsername());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        UserEntity userEntity = userRepository.findByUserName(username);
         if (userEntity == null) {
             throw new EntityNotFoundException("Username " + commentDto.getUsername() + " not found");
         }

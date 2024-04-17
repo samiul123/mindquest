@@ -32,14 +32,14 @@ public class TriviaController {
 
 
     @GetMapping("/trivia/next")
-    public ResponseEntity<TriviaResponse> getTrivia(@RequestParam String username) throws Exception {
-        TriviaResponse trivia = triviaService.getTrivia(username);
+    public ResponseEntity<TriviaResponse> getTrivia() throws Exception {
+        TriviaResponse trivia = triviaService.getTrivia();
         return new ResponseEntity<>(trivia, HttpStatus.OK);
     }
 
     @GetMapping("/trivia/agg-score")
-    public ResponseEntity<List<AggregateScore>> getAggregatedScore(@RequestParam String username) {
-        List<AggregateScore> aggregatedScore = triviaService.getAggregatedScore(username);
+    public ResponseEntity<List<AggregateScore>> getAggregatedScore() {
+        List<AggregateScore> aggregatedScore = triviaService.getAggregatedScore();
         return new ResponseEntity<>(aggregatedScore, HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend/secure_storage.dart';
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
 
@@ -36,8 +37,10 @@ class _TriviaScreenState extends State<TriviaScreen> {
   }
 
   static Future<dynamic> _fetchTrivia() async {
-    String apiUrl = '${dotenv.env["BASE_URL"]}/trivia/next?username=sa001';
-    final response = await http.get(Uri.parse(apiUrl));
+    String? accessToken = await SecureStorage().storage.read(key: 'accessToken');
+    Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': '$accessToken'};
+    String apiUrl = '${dotenv.env["BASE_URL"]}/trivia/next';
+    final response = await http.get(Uri.parse(apiUrl), headers: headers);
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
@@ -46,11 +49,11 @@ class _TriviaScreenState extends State<TriviaScreen> {
   }
 
   Future<dynamic> _handleSubmit() async {
+    String? accessToken = await SecureStorage().storage.read(key: 'accessToken');
     String apiUrl = '${dotenv.env["BASE_URL"]}/trivia/submit';
-    Map<String, String> headers = {'Content-Type': 'application/json'};
+    Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': '$accessToken'};
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode({
-          'username': 'sa001',
           'triviaId': triviaData['id'],
           'choice': selectedAnswer
         }),
