@@ -11,10 +11,12 @@ import org.mux.backend.trivia.repository.BackupUserScoreRepository;
 import org.mux.backend.trivia.repository.TriviaRepository;
 import org.mux.backend.trivia.repository.UserScoreAggregateRepository;
 import org.mux.backend.trivia.repository.UserScoreRepository;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -129,6 +131,11 @@ public class TriviaService {
     public List<AggregateScore> getAggregatedScore() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
+        List<AggregateScore> dummyList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            dummyList.add(new AggregateScore(LocalDate.now().minusDays(i), 0));
+        }
+
         List<UserScoreEntity> userScoreEntities = userScoreRepository.findAllByUsername(username);
         if (userScoreEntities == null) {
             throw new EntityNotFoundException("User scores not found");
@@ -143,7 +150,7 @@ public class TriviaService {
                 .map(entity -> new ScoreDto(entity.getSubmissionDateTime(), entity.getScore()))
                 .collect(Collectors.toList()));
 
-        return mergedList.stream()
+        List<AggregateScore> realScores = mergedList.stream()
                 .collect(Collectors.groupingBy(score -> score.getSubmissionDateTime().toLocalDate(),
                         Collectors.summingInt(ScoreDto::getScore)))
                 .entrySet().stream()
@@ -154,5 +161,29 @@ public class TriviaService {
                 .sorted(Comparator.comparing(AggregateScore::getDate).reversed()) // Sort in descending order based on date
                 .limit(5)
                 .collect(Collectors.toList());
+
+        List<AggregateScore> result = new ArrayList<>();
+        Set<LocalDate> resultDates = new HashSet<>();
+        int i = 0;
+        int j = 0;
+
+        while (i < 5 && j < 5 && result.size() < 5) {
+            if (resultDates.contains(dummyList.get(i).getDate())) {
+                i++;
+            } if (resultDates.contains(realScores.get(j).getDate())) {
+                j++;
+            }
+            if (dummyList.get(i).getDate().isEqual(realScores.get(j).getDate()) ||
+                    dummyList.get(i).getDate().isBefore(realScores.get(j).getDate())) {
+                result.add(realScores.get(j));
+                resultDates.add(realScores.get(j).getDate());
+                j++;
+            } else {
+                result.add(dummyList.get(i));
+                resultDates.add(dummyList.get(i).getDate());
+                i++;
+            }
+        }
+        return result;
     }
 }
