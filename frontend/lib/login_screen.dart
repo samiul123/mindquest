@@ -49,7 +49,6 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         // Successful login
         String? accessToken = response.headers['authorization'];
-        print('Login successful: $accessToken');
         await SecureStorage().storage.write(key: 'accessToken', value: accessToken);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CommonLayout()));
         // Navigate to the home screen or perform other actions
