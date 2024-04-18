@@ -11,8 +11,12 @@ import org.mux.backend.trivia.repository.BackupUserScoreRepository;
 import org.mux.backend.trivia.repository.TriviaRepository;
 import org.mux.backend.trivia.repository.UserScoreAggregateRepository;
 import org.mux.backend.trivia.repository.UserScoreRepository;
+import org.springframework.cglib.core.Local;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -50,12 +54,13 @@ public class TriviaService {
                 .build());
     }
 
-    public TriviaResponse getTrivia(String username) throws Exception {
+    public TriviaResponse getTrivia() throws Exception {
         List<TriviaEntity> allTrivia = triviaRepository.findAll();
         if (allTrivia.isEmpty()) {
             throw new EntityNotFoundException("Trivia not found");
         }
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
         List<UserScoreEntity> attemptedTrivia = userScoreRepository.findAllByUsername(username);
         if (attemptedTrivia.isEmpty()) {
             TriviaEntity triviaEntity = triviaRepository.findOneRow();
@@ -106,7 +111,10 @@ public class TriviaService {
     }
 
     public boolean checkAnswer(UserScoreDto userScoreDto) {
-        UserEntity userEntity = userRepository.findByUserName(userScoreDto.getUsername());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        UserEntity userEntity = userRepository.findByUserName(username);
+//        UserEntity userEntity = userRepository.findByUserName(userScoreDto.getUsername());
         Optional<TriviaEntity> submittedTrivia = Optional.ofNullable(triviaRepository.findById(userScoreDto.getTriviaId())
                 .orElseThrow(() -> new EntityNotFoundException("Trivia not found")));
         boolean check = submittedTrivia.get().getCorrectOption().equals(userScoreDto.getChoice());
@@ -117,36 +125,17 @@ public class TriviaService {
                 .submissionDateTime(LocalDateTime.now())
                 .build();
         userScoreRepository.save(userScoreEntity);
-//        aggregateUserScores(userScoreDto.getUsername());
         return check;
     }
 
-//    @Async
-//    protected void aggregateUserScores(String username) {
-//        UserEntity userEntity = userRepository.findByUserName(username);
-//        List<AggregateScore> userScoreAggregateDtos = backupUserScoreRepository
-//                .aggregateScoreForUser(username).get();
-//
-//        userScoreAggregateDtos.forEach(userScoreAggregateDto -> {
-//            UserScoreAggregateEntity userScoreAggregateEntity = userScoreAggregateRepository
-//                    .findByUserNameAndDate(username, userScoreAggregateDto.getDate());
-//            if (userScoreAggregateEntity != null) {
-//                userScoreAggregateEntity.setAggregatedScore(userScoreAggregateDto.getAggregatedScore());
-//                userScoreAggregateRepository.save(userScoreAggregateEntity);
-//            } else {
-//                userScoreAggregateRepository.save(UserScoreAggregateEntity.builder()
-//                        .userEntity(userEntity)
-//                        .aggregatedScore(userScoreAggregateDto.getAggregatedScore())
-//                        .date(userScoreAggregateDto.getDate())
-//                        .build());
-//            }
-//        });
-//    }
+    public List<AggregateScore> getAggregatedScore() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        List<AggregateScore> dummyList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            dummyList.add(new AggregateScore(LocalDate.now().minusDays(i), 0));
+        }
 
-    public List<AggregateScore> getAggregatedScore(String username) {
-//        Optional<List<UserScoreAggregateDto>> userScoreAggregateDtos = Optional.ofNullable(userScoreAggregateRepository
-//                .findAllByUserName(username).orElseThrow(() ->
-//                        new EntityNotFoundException("User aggregated scores not found")));
         List<UserScoreEntity> userScoreEntities = userScoreRepository.findAllByUsername(username);
         if (userScoreEntities == null) {
             throw new EntityNotFoundException("User scores not found");
@@ -161,7 +150,7 @@ public class TriviaService {
                 .map(entity -> new ScoreDto(entity.getSubmissionDateTime(), entity.getScore()))
                 .collect(Collectors.toList()));
 
-        return mergedList.stream()
+        List<AggregateScore> realScores = mergedList.stream()
                 .collect(Collectors.groupingBy(score -> score.getSubmissionDateTime().toLocalDate(),
                         Collectors.summingInt(ScoreDto::getScore)))
                 .entrySet().stream()
@@ -172,5 +161,29 @@ public class TriviaService {
                 .sorted(Comparator.comparing(AggregateScore::getDate).reversed()) // Sort in descending order based on date
                 .limit(5)
                 .collect(Collectors.toList());
+
+        List<AggregateScore> result = new ArrayList<>();
+        Set<LocalDate> resultDates = new HashSet<>();
+        int i = 0;
+        int j = 0;
+
+        while (i < 5 && j < 5 && result.size() < 5) {
+            if (resultDates.contains(dummyList.get(i).getDate())) {
+                i++;
+            } if (resultDates.contains(realScores.get(j).getDate())) {
+                j++;
+            }
+            if (dummyList.get(i).getDate().isEqual(realScores.get(j).getDate()) ||
+                    dummyList.get(i).getDate().isBefore(realScores.get(j).getDate())) {
+                result.add(realScores.get(j));
+                resultDates.add(realScores.get(j).getDate());
+                j++;
+            } else {
+                result.add(dummyList.get(i));
+                resultDates.add(dummyList.get(i).getDate());
+                i++;
+            }
+        }
+        return result;
     }
 }
