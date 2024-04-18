@@ -3,6 +3,7 @@ import 'package:frontend/breathing.dart';
 import 'package:frontend/discussion_home_screen.dart';
 import 'package:frontend/discussion_post_details.dart';
 import 'package:frontend/discussion_post_screen.dart';
+import 'package:frontend/settings.dart';
 import 'package:frontend/trivia_screen_v2.dart';
 import 'package:frontend/utils.dart';
 
@@ -66,6 +67,11 @@ class _CommonLayoutState extends State<CommonLayout> {
             GestureDetector(
               onTap: () {
                 print("Profile image clicked");
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                        const SettingsScreen()));
               },
               child: const Padding(
                 padding: EdgeInsets.all(8.0),

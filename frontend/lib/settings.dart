@@ -3,10 +3,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend/common_layout.dart';
+import 'package:frontend/globals.dart' as globals;
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
-
-import 'package:frontend/globals.dart' as globals;
 
 import 'login_screen.dart';
 
@@ -18,7 +18,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   bool loggingOut = false, cancelLogout = false;
 
   @override
@@ -54,7 +53,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-
   Future<dynamic> handleLogout(BuildContext context) async {
     String apiUrl = '${dotenv.env["BASE_URL"]}/trivia/submit';
     Map<String, String> headers = {'Content-Type': 'application/json'};
@@ -66,46 +64,56 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (response.statusCode == 200) {
       setState(() {
         // Navigate back to the log in page
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()));
       });
     } else {
       throw Exception('Failed to submit');
     }
   }
 
-  void logoutConfirm(BuildContext context){
+  void logoutConfirm(BuildContext context) {
     loggingOut = true;
     cancelLogout = false;
     Navigator.pop(context, 'OK');
     Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()));
+        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
-  void logoutCancel(BuildContext context){
+
+  void logoutCancel(BuildContext context) {
     loggingOut = false;
     cancelLogout = true;
     Navigator.pop(context, 'Cancel');
   }
+
   // Function to return an AlertDialog to get a confirmation to log out
-  AlertDialog confirmLogout(BuildContext context){
+  AlertDialog confirmLogout(BuildContext context) {
     return AlertDialog(
       title: const Text('Confirmation:', style: TextStyle(color: Colors.white)),
-      content: const Text('You are about to log out, are you sure? (someone write better text)', style: TextStyle(color: Colors.white)),
+      content: const Text(
+          'You are about to log out, are you sure? (someone write better text)',
+          style: TextStyle(color: Colors.white)),
       backgroundColor: CustomColor.purple,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
       actions: <Widget>[
         TextButton(
           onPressed: () => logoutCancel(context),
-          child: const Text('Cancel', style: TextStyle(color: Colors.white, fontSize: 20),),
+          child: const Text(
+            'Cancel',
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
         ),
         TextButton(
           onPressed: () => logoutConfirm(context),
-          child: const Text('OK', style: TextStyle(color: Colors.white, fontSize: 20),),
+          child: const Text(
+            'OK',
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
         ),
       ],
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +123,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
     AlertDialog workInProgressAlert = globals.getWIPAlert(context);
 
     return Scaffold(
-        backgroundColor: (globals.darkTheme) ? globals.dark_background : globals.light_background,
+        backgroundColor: (globals.darkTheme)
+            ? globals.dark_background
+            : globals.light_background,
+        appBar: AppBar(
+          backgroundColor: CustomColor.purple,
+          title: const Text('MindQuest', style: TextStyle(color: Colors.white)),
+          // leading: _buildLeadingIcon(),
+          centerTitle: true,
+          actions: [
+            GestureDetector(
+              onTap: () {
+                print("Home image clicked");
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CommonLayout()));
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.home,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
         body: Center(
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -123,15 +158,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Positioned(
-                          top: 20,
-                          child: Text(
-                            "  TOP        TEXT",
-                            style: TextStyle(
-                                color: (globals.darkTheme) ? Colors.white : Colors.black,
-                                fontSize: 16),
-                          )),
-                      const SizedBox(height: 25),
                       //Change Username:
                       Flexible(
                           flex: 1,
@@ -139,16 +165,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             onTap: () {
                               showDialog<String>(
                                 context: context,
-                                builder: (BuildContext context) => workInProgressAlert,
+                                builder: (BuildContext context) =>
+                                    workInProgressAlert,
                               );
                             },
                             child: const Card(
-                                color: Colors.grey,
-                                child: Center(
-                                    child: Text(
-                                      "Change Username",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                ))),
+                                color: CustomColor.lightgrey,
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Text(
+                                          "Change Username",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        )))),
                           )),
                       //Change Picture:
                       Flexible(
@@ -157,16 +189,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             onTap: () {
                               showDialog<String>(
                                 context: context,
-                                builder: (BuildContext context) => workInProgressAlert,
+                                builder: (BuildContext context) =>
+                                    workInProgressAlert,
                               );
                             },
                             child: const Card(
-                                color: Colors.grey,
-                                child: Center(
-                                    child: Text(
-                                  "Change Picture",
-                                  style: TextStyle(color: Colors.white, fontSize: 20),
-                                ))),
+                                color: CustomColor.lightgrey,
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Text(
+                                          "Change Picture",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        )))),
                           )),
                       //Change Password:
                       Flexible(
@@ -175,80 +213,104 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             onTap: () {
                               showDialog<String>(
                                 context: context,
-                                builder: (BuildContext context) => workInProgressAlert,
+                                builder: (BuildContext context) =>
+                                    workInProgressAlert,
                               );
                             },
                             child: const Card(
-                                color: Colors.grey,
-                                child: Center(
-                                    child: Text(
-                                  "Change Password",
-                                  style: TextStyle(color: Colors.white, fontSize: 20),
-                                ))),
+                                color: CustomColor.lightgrey,
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Text(
+                                          "Change Password",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        )))),
                           )),
                       // const SizedBox(height: 10),
                       //Notifications switch card:
                       Flexible(
-                        flex: 0,
+                        flex: 1,
                         child: Card(
-                            color: Colors.grey,
-                            child: Center(
-                                child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              textDirection: TextDirection.rtl,
-                              children: [
-                                Switch(
-                                  // This bool value toggles the switch.
-                                  value: globals.notifications,
-                                  activeColor: Colors.white,
-                                  onChanged: (bool value) {
-                                    // This is called when the user toggles the switch.
-                                    setState(() {
-                                      globals.notifications = value;
-                                    });
-                                  },
-                                ),
-                                const SizedBox(width: 10),
-                                const Text("Notifications ",
-                                    style: TextStyle(color: Colors.white, fontSize: 20),
-                                    textAlign: TextAlign.center,
-
-                                ),
-                              ],
-                            ))),
+                            color: CustomColor.lightgrey,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "Notifications ",
+                                            style: TextStyle(
+                                                color: Colors.white, fontSize: 20),
+                                            textAlign: TextAlign.center,
+                                          )
+                                      ),
+                                      Expanded(child: Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Switch(
+                                          // This bool value toggles the switch.
+                                          value: globals.notifications,
+                                          activeColor: Colors.white,
+                                          onChanged: (bool value) {
+                                            // This is called when the user toggles the switch.
+                                            setState(() {
+                                              globals.notifications = value;
+                                            });
+                                          },
+                                        ),
+                                      ))
+                                    ],
+                                  )),
+                            )),
                       ),
                       // const SizedBox(height: 10),
                       //Dark mode switch card:
                       Flexible(
-                        flex: 0,
+                        flex: 1,
                         child: Card(
-                            color: Colors.grey,
-                            child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  textDirection: TextDirection.rtl,
-                                  children: [
-                                    Switch(
-                                      // This bool value toggles the switch.
-                                      value: globals.darkTheme,
-                                      activeColor: Colors.white,
-                                      onChanged: (bool value) {
-                                        // This is called when the user toggles the switch.
-                                        setState(() {
-                                          globals.darkTheme = value;
-                                        });
-                                      },
-                                    ),
-                                    const SizedBox(width: 25),
-                                    const Text("Dark mode ",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                      textAlign: TextAlign.center,
-
-                                    ),
-                                  ],
-                                ))),
+                            color: CustomColor.lightgrey,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "Dark Mode",
+                                            style: TextStyle(
+                                                color: Colors.white, fontSize: 20),
+                                            textAlign: TextAlign.center,
+                                          )
+                                      ),
+                                      Expanded(
+                                          child: Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Switch(
+                                              // This bool value toggles the switch.
+                                              value: globals.darkTheme,
+                                              activeColor: Colors.white,
+                                              onChanged: (bool value) {
+                                                // This is called when the user toggles the switch.
+                                                setState(() {
+                                                  globals.darkTheme = value;
+                                                });
+                                              },
+                                            ),
+                                          )
+                                      )
+                                    ],
+                                  )),
+                            )),
                       ),
                       const SizedBox(height: 150),
                       //Log-out:
@@ -262,7 +324,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               // Navigate back to the log in page
                               showDialog<String>(
                                 context: context,
-                                builder: (BuildContext context) => confirmLogout(context),
+                                builder: (BuildContext context) =>
+                                    confirmLogout(context),
                               );
 
                               loggingOut = false;
@@ -272,9 +335,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 color: CustomColor.purple,
                                 child: Center(
                                     child: Text(
-                                      "Log Out",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                    ))),
+                                  "Log Out",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ))),
                           )),
                       const SizedBox(height: 150),
                       // Old dark mode switch:
@@ -308,7 +372,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       //   // )
                       // ),
                       // const SizedBox(height: 10),
-                    ]
-                ))));
+                    ]))));
   }
 }
