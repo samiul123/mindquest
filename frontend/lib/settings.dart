@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/common_layout.dart';
 import 'package:frontend/globals.dart' as globals;
+import 'package:frontend/secure_storage.dart';
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
 
@@ -75,8 +76,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void logoutConfirm(BuildContext context) {
     loggingOut = true;
     cancelLogout = false;
+    SecureStorage().storage.delete(key: 'accessToken');
     Navigator.pop(context, 'OK');
-    Navigator.push(
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
@@ -91,7 +93,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return AlertDialog(
       title: const Text('Confirmation:', style: TextStyle(color: Colors.white)),
       content: const Text(
-          'You are about to log out, are you sure? (someone write better text)',
+          'You are about to log out, are you sure?',
           style: TextStyle(color: Colors.white)),
       backgroundColor: CustomColor.purple,
       shape: const RoundedRectangleBorder(
@@ -153,7 +155,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         body: Center(
             child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
