@@ -7,6 +7,7 @@ import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
 
 import 'common_layout.dart';
+import 'globals.dart' as globals;
 
 class DiscussionPostScreen extends StatefulWidget {
   const DiscussionPostScreen({super.key});
@@ -85,7 +86,9 @@ class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        backgroundColor: Colors.grey[850],
+        backgroundColor: (globals.darkTheme)
+            ? globals.dark_background
+            : globals.light_background,
         body: Padding(
           padding: const EdgeInsets.all(5),
           child: Center(

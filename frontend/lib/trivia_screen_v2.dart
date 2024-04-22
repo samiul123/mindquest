@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/secure_storage.dart';
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
+import 'globals.dart' as globals;
 
 class TriviaScreen extends StatefulWidget {
   const TriviaScreen({super.key});
@@ -103,7 +104,9 @@ class _TriviaScreenState extends State<TriviaScreen> {
       return const Center(child: CircularProgressIndicator());
     }
     return Scaffold(
-        backgroundColor: Colors.grey[850],
+        backgroundColor: (globals.darkTheme)
+            ? globals.dark_background
+            : globals.light_background,
         body: Center(
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -111,11 +114,15 @@ class _TriviaScreenState extends State<TriviaScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        triviaData['question'],
-                        style: const TextStyle(
-                            color: Colors.white, fontSize: 16),
-                      ),
+                      Positioned(
+                          top: 20,
+                          child: Text(
+                            triviaData['question'],
+                            style: TextStyle(
+                                color: (!globals.darkTheme)
+                                    ? globals.dark_background
+                                    : globals.light_background, fontSize: 16),
+                          )),
                       const SizedBox(height: 25),
                       Flexible(
                           flex: 2,

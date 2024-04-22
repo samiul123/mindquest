@@ -8,6 +8,7 @@ import 'package:frontend/trivia_screen_v2.dart';
 import 'package:frontend/utils.dart';
 
 import 'home_screen.dart';
+import 'globals.dart' as globals;
 
 class CommonLayout extends StatefulWidget {
   final int pageIndex;
@@ -58,7 +59,9 @@ class _CommonLayoutState extends State<CommonLayout> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        backgroundColor: CustomColor.grey,
+        backgroundColor: (globals.darkTheme)
+            ? globals.dark_background
+            : globals.light_background,
         appBar: AppBar(
           backgroundColor: CustomColor.purple,
           title: const Text('MindQuest', style: TextStyle(color: Colors.white)),

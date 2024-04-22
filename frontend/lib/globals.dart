@@ -7,7 +7,7 @@ bool notifications = false;
 
 // Background colors
 Color? dark_background = Colors.grey[850];
-Color? light_background = Colors.grey[150];
+Color? light_background = Colors.white;
 // Foreground colors
 Color? foreground = Colors.grey;
 // Accent colors

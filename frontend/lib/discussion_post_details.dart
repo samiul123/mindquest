@@ -6,6 +6,7 @@ import 'package:frontend/discussion_post.dart';
 import 'package:frontend/secure_storage.dart';
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
+import 'globals.dart' as globals;
 
 class DiscussionPostDetails extends StatefulWidget {
   final dynamic post;
@@ -146,7 +147,9 @@ class _DiscussionPostDetailsState extends State<DiscussionPostDetails> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollListener());
     // TODO: implement build
     return Scaffold(
-      backgroundColor: Colors.grey[850],
+      backgroundColor: (globals.darkTheme)
+          ? globals.dark_background
+          : globals.light_background,
       body: Padding(
         padding: const EdgeInsets.all(2.0),
         child: Column(
