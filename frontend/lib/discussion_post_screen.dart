@@ -99,17 +99,22 @@ class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
                     flex: 1,
                     child: Card(
                         color: CustomColor.lightgrey,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: TextField(
-                            style: const TextStyle(color: Colors.white),
-                            controller: subjectController,
-                            decoration: const InputDecoration(
-                                hintStyle: TextStyle(color: Colors.white),
-                                hintText: 'Subject',
-                                border: InputBorder.none),
+                        child: Center(
+                          child:  Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: TextField(
+                              // keyboardType: TextInputType.multiline,
+                              cursorColor: Colors.white,
+                              style: const TextStyle(color: Colors.white),
+                              controller: subjectController,
+                              decoration: const InputDecoration(
+                                  hintStyle: TextStyle(color: Colors.white),
+                                  hintText: 'Subject',
+                                  border: InputBorder.none),
+                            ),
                           ),
-                        ))),
+                        )
+                       )),
                 const SizedBox(height: 5),
                 Expanded(
                     flex: 2,
@@ -118,6 +123,9 @@ class _DiscussionPostScreenState extends State<DiscussionPostScreen> {
                         child: Padding(
                             padding: const EdgeInsets.all(10),
                             child: TextField(
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              cursorColor: Colors.white,
                               style: const TextStyle(color: Colors.white),
                               controller: bodyController,
                               decoration: const InputDecoration(

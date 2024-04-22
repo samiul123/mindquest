@@ -24,7 +24,7 @@ public class CommentEntity {
     @JoinColumn(name = "username", referencedColumnName = "userName")
     private UserEntity userEntity;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String body;
 
     @Column(nullable = false)

@@ -18,6 +18,7 @@ class _BreathingScreenState extends State<BreathingScreen>
   String todo = "";
   late AnimationController _breathingController;
   late Timer timer;
+  bool timerInitialized = false;
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _BreathingScreenState extends State<BreathingScreen>
         });
         // Hold the animation for 4 seconds
         timer = Timer(const Duration(seconds: 4), () {
+          timerInitialized = true;
           setState(() {
             todo = "Inhale";
           });
@@ -47,6 +49,7 @@ class _BreathingScreenState extends State<BreathingScreen>
           todo = "Hold";
         });
         timer = Timer(const Duration(seconds: 4), () {
+          timerInitialized = true;
           setState(() {
             todo = "Exhale";
           });
@@ -66,7 +69,7 @@ class _BreathingScreenState extends State<BreathingScreen>
   void dispose() {
     super.dispose();
     _breathingController.dispose();
-    timer.cancel();
+    if (timerInitialized) timer.cancel();
   }
 
   @override

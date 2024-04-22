@@ -24,7 +24,7 @@ public class PostEntity {
     @Column(nullable = false)
     private String subject;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String body;
 
     @Column(nullable = false)

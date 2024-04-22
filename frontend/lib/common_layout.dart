@@ -23,6 +23,7 @@ class _CommonLayoutState extends State<CommonLayout> {
   bool _showBackIcon = false;
 
   late List<Widget> _pageList;
+  int disabledIndex = 4;
 
   @override
   void initState() {
@@ -32,7 +33,7 @@ class _CommonLayoutState extends State<CommonLayout> {
       const TriviaScreen(),
       DiscussionHomeScreen(replacePage: _replacePage),
       const HomeScreen(),
-      BreathingScreen(),
+      const BreathingScreen(),
       const HomeScreen()
     ];
   }
@@ -113,12 +114,13 @@ class _CommonLayoutState extends State<CommonLayout> {
 
   void _onItemTapped(int index) {
     print("Index: $index");
+    if (index == disabledIndex) return;
     setState(() {
       _selectedIndex = index;
-      if (index == 1) {
-        _replacePage(1, DiscussionHomeScreen(replacePage: _replacePage));
-      }
     });
+    if (index == 1) {
+      _replacePage(1, DiscussionHomeScreen(replacePage: _replacePage));
+    }
   }
 
   void _replacePage(int index, Widget widget) {

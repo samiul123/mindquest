@@ -111,13 +111,11 @@ class _TriviaScreenState extends State<TriviaScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Positioned(
-                          top: 20,
-                          child: Text(
-                            triviaData['question'],
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
-                          )),
+                      Text(
+                        triviaData['question'],
+                        style: const TextStyle(
+                            color: Colors.white, fontSize: 16),
+                      ),
                       const SizedBox(height: 25),
                       Flexible(
                           flex: 2,
