@@ -7,6 +7,7 @@ import 'package:frontend/discussion_post_screen.dart';
 import 'package:frontend/secure_storage.dart';
 import 'package:frontend/utils.dart';
 import 'package:http/http.dart' as http;
+import 'globals.dart' as globals;
 
 class DiscussionHomeScreen extends StatefulWidget {
   final Function(int, Widget) replacePage;
@@ -79,7 +80,9 @@ class DiscussionHomeScreenState extends State<DiscussionHomeScreen> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollListener());
     return Scaffold(
-        backgroundColor: Colors.grey[850],
+        backgroundColor: (globals.darkTheme)
+            ? globals.dark_background
+            : globals.light_background,
         body: Padding(
           padding: const EdgeInsets.all(2.0),
           child: Column(

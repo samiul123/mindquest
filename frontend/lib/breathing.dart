@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/utils.dart';
+import 'globals.dart' as globals;
 
 class BreathingScreen extends StatefulWidget {
   const BreathingScreen({super.key});
@@ -73,7 +74,9 @@ class _BreathingScreenState extends State<BreathingScreen>
   Widget build(BuildContext context) {
     final size = 200.0 - 100.0 * _breathe;
     return Scaffold(
-        backgroundColor: Colors.grey[850],
+        backgroundColor: (globals.darkTheme)
+            ? globals.dark_background
+            : globals.light_background,
         body: Stack(
           fit: StackFit.expand,
           children: [
@@ -83,7 +86,9 @@ class _BreathingScreenState extends State<BreathingScreen>
                 width: 100 + size,
                 child: Material(
                   borderRadius: BorderRadius.circular(size),
-                  color: Colors.white,
+                  color: (!globals.darkTheme)
+                      ? globals.dark_background
+                      : globals.light_background,
                   child: Icon(
                     Icons.circle,
                     size: 200,
