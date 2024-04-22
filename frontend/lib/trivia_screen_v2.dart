@@ -118,7 +118,7 @@ class _TriviaScreenState extends State<TriviaScreen> {
                           top: 20,
                           child: Text(
                             triviaData['question'],
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: (!globals.darkTheme)
                                     ? globals.dark_background
                                     : globals.light_background, fontSize: 16),

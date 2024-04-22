@@ -87,7 +87,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                 child: Material(
                   borderRadius: BorderRadius.circular(size),
                   color: (!globals.darkTheme)
-                      ? globals.dark_background
+                      ? CustomColor.purple
                       : globals.light_background,
                   child: Icon(
                     Icons.circle,
@@ -102,8 +102,10 @@ class _BreathingScreenState extends State<BreathingScreen>
              Center(
               child: Text(
                 todo,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: (!globals.darkTheme)
+                      ? globals.dark_background
+                      : globals.light_background,
                   fontSize: 30, // Adjust font size as needed
                 ),
               ),
