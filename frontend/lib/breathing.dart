@@ -92,7 +92,9 @@ class _BreathingScreenState extends State<BreathingScreen>
                   child: Icon(
                     Icons.circle,
                     size: 200,
-                    color: Colors.grey[850],
+                    color: (globals.darkTheme)
+                        ? globals.dark_background
+                        : globals.light_background,
                   ),
                 ),
               ),
